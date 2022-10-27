@@ -39,7 +39,7 @@ const Register = () => {
           transform: 'translateY(-8%)'
         }}
         > 
-        <Logo />
+        <Logo size={'xl6'}/>
         {/* register box */}
         <Box
           sx={{

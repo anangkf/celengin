@@ -1,5 +1,5 @@
 import React from 'react'
-import { AspectRatio, Box, Button, TextField, Typography } from '@mui/joy'
+import { Box, Button, TextField, Typography } from '@mui/joy'
 import { theme } from '../themes'
 import { Link } from 'react-router-dom'
 import Logo from '../components/Logo'
@@ -58,7 +58,7 @@ const Login = () => {
           transform: 'translateY(-8%)'
         }}
         > 
-        <Logo />
+        <Logo size={'xl6'}/>
         {/* login box */}
         <Box
           sx={{
