@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { CssVarsProvider } from '@mui/joy/styles';
+import CssBaseline from '@mui/joy/CssBaseline';
 import './index.css';
-import App from './App';
+import SetupRouter from './routes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <CssVarsProvider>
+      <CssBaseline />
+      <SetupRouter />
+    </CssVarsProvider>
   </React.StrictMode>
 );
