@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/system";
+import OutfitRegular from '../assets/fonts/outfit/Outfit-Regular.ttf'
 
 export const theme = createTheme({
   vars:{
@@ -11,5 +12,5 @@ export const theme = createTheme({
     softBlue: '#2EC4B6',
     green: '#3DC926',
     red: '#F24236',
-  }
+  },
 })
