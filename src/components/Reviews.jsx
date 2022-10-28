@@ -1,5 +1,5 @@
 import { Box, Card, Typography } from '@mui/joy'
-// import { Rating } from '@mui/material'
+import { Rating } from '@mui/material'
 import React from 'react'
 import { theme } from '../themes'
 
@@ -118,7 +118,7 @@ const Reviews = () => {
                 boxShadow: '0.5px 0.5px 12px 2px #dddddd'
               }}
             >
-              {/* <Rating value={rating} readOnly /> */}
+              <Rating value={rating} readOnly />
               <Typography
                 sx={{
                   color: theme.vars.dark,
