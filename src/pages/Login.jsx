@@ -75,7 +75,7 @@ const Login = () => {
           }}
         >
           <Typography
-            level='h2'
+            fontSize= {'xl4'}
             sx={{
               mb: 2
             }}

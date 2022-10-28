@@ -1,7 +1,6 @@
-import { createTheme } from "@mui/system";
-import OutfitRegular from '../assets/fonts/outfit/Outfit-Regular.ttf'
+import { extendTheme } from "@mui/joy";
 
-export const theme = createTheme({
+export const theme = extendTheme({
   vars:{
     yellow: '#FF9F1C',
     dark: '#011627',
@@ -13,4 +12,10 @@ export const theme = createTheme({
     green: '#3DC926',
     red: '#F24236',
   },
+  fontFamily: {
+    body: 'Outfit, sans-serif',
+  },
+  // typography: {
+  //   fontFamily: 'Outfit, sans-serif',
+  // },
 })
