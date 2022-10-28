@@ -14,14 +14,10 @@ const Landing = () => {
         minHeight: '100vh',
         display: 'block',
         backgroundColor: theme.vars.light,
-        p: 1
+        p: 1,
       }}
     >
-      <Container
-        sx={{
-          // minHeight: '100vh',
-        }}
-      >
+      <Container>
         <Hero />
         <Summary />
         <Features />
