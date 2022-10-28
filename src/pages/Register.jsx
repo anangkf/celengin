@@ -39,7 +39,7 @@ const Register = () => {
           transform: 'translateY(-8%)'
         }}
         > 
-        <Logo />
+        <Logo size={'xl6'}/>
         {/* register box */}
         <Box
           sx={{
@@ -56,7 +56,7 @@ const Register = () => {
           }}
         >
           <Typography
-            level='h2'
+            fontSize= {'xl4'}
             sx={{
               mb: 1
             }}
@@ -75,11 +75,17 @@ const Register = () => {
               label="firstname" 
               placeholder="your firstname…" 
               variant="outlined"
+              sx={{
+                maxWidth: '48%'
+              }}
             />
             <TextField 
               label="lastname" 
               placeholder="your lastname…" 
               variant="outlined"
+              sx={{
+                maxWidth: '48%'
+              }}
             />
           </Box>
           <TextField 
@@ -100,12 +106,18 @@ const Register = () => {
               placeholder="enter password…" 
               type='password'
               variant="outlined"
+              sx={{
+                maxWidth: '48%'
+              }}
             />
             <TextField 
               label="confirm password" 
               placeholder="re-enter password…" 
               type='password'
               variant="outlined"
+              sx={{
+                maxWidth: '48%'
+              }}
             />
           </Box>
 

@@ -5,7 +5,7 @@ import { theme } from '../themes'
 const Logo = ({size}) => {
   return (
     <Typography
-      fontSize="xl6"
+      fontSize={size}
       textColor={theme.vars.dark}
       sx={{
         mb: 1
