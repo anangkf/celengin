@@ -11,11 +11,13 @@ export const theme = extendTheme({
     softBlue: '#2EC4B6',
     green: '#3DC926',
     red: '#F24236',
+    shadow: '0px 2px 18px 4px rgba(0, 0, 0, 0.25)',
   },
   fontFamily: {
     body: 'Outfit, sans-serif',
+    color: '#011627'
   },
   // typography: {
-  //   fontFamily: 'Outfit, sans-serif',
+  //   fontColor: '#011627',
   // },
 })

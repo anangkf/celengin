@@ -9,13 +9,16 @@ const Navbar = () => {
 
   return (
     <Box
-      fullwidth
       sx={{
         backgroundColor: theme.vars.yellow,
         color: theme.vars.dark,
+        position: 'fixed',
+        top: 0,
         display: 'flex',
+        width: '100%',
         alignItems: 'center',
-        px: 2
+        px: 2,
+        boxShadow: theme.vars.shadow
       }}
     >
       <Box onClick={() =>navigate('/')} sx={{cursor: 'pointer'}}>
