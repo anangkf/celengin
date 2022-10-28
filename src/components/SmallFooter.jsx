@@ -9,7 +9,7 @@ const SmallFooter = () => {
         position: 'absolute',
         bottom: '0',
         height: '45px',
-        width: '100vw',
+        width: '100%',
         backgroundColor: theme.vars.dark,
         display: 'flex',
         justifyContent: 'center',
