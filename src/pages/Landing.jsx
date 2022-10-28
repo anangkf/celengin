@@ -1,6 +1,7 @@
 import { Box, Container } from '@mui/joy'
 import React from 'react'
 import Hero from '../components/Hero'
+import Summary from '../components/Summary'
 import { theme } from '../themes'
 
 const Landing = () => {
@@ -20,6 +21,7 @@ const Landing = () => {
         }}
       >
         <Hero />
+        <Summary />
       </Container>
     </Box>
   )

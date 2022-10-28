@@ -52,7 +52,7 @@ const Hero = () => {
               my: 2,
               '&:hover': {
                 backgroundColor: theme.vars.dark,
-                opacity: 0.8
+                opacity: 0.85
               }
             }}
           >

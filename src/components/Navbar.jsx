@@ -18,7 +18,8 @@ const Navbar = () => {
         width: '100%',
         alignItems: 'center',
         px: 2,
-        boxShadow: theme.vars.shadow
+        boxShadow: theme.vars.shadow,
+        zIndex: 99
       }}
     >
       <Box onClick={() =>navigate('/')} sx={{cursor: 'pointer'}}>
@@ -79,7 +80,7 @@ const Navbar = () => {
       >
         <Button
           onClick={() => navigate('/login')}
-          variant='outlined'
+          variant='plain'
           sx={{
             color: theme.vars.dark,
             borderColor: theme.vars.dark,
