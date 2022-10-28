@@ -2,6 +2,7 @@ import { Box, Container } from '@mui/joy'
 import React from 'react'
 import Features from '../components/Features'
 import Hero from '../components/Hero'
+import Reviews from '../components/Reviews'
 import Summary from '../components/Summary'
 import { theme } from '../themes'
 
@@ -24,6 +25,7 @@ const Landing = () => {
         <Hero />
         <Summary />
         <Features />
+        <Reviews />
       </Container>
     </Box>
   )

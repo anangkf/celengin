@@ -58,6 +58,7 @@ const Features = () => {
         {features.map(feature =>{
           return(
             <Box
+              key={feature.title}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
