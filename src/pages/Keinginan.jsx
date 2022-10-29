@@ -1,12 +1,10 @@
-import { Button, FormLabel, IconButton, Input, Tab, TabList, Tabs, Typography } from '@mui/joy'
-import { Box, Container, FormControl, Skeleton } from '@mui/material'
+import { Button, Input, Tab, TabList, Tabs, Typography } from '@mui/joy'
+import { Box, Container, FormControl } from '@mui/material'
 import React from 'react'
 import BoxWrapper from '../components/BoxWrapper'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { theme } from '../themes'
 import { AddCircle } from '@mui/icons-material';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import KeinginanList from '../components/KeinginanList';
 
 const Keinginan = () => {  
