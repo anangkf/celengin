@@ -1,6 +1,6 @@
 import { Button, FormLabel, IconButton, Input, Tab, TabList, Tabs, Typography } from '@mui/joy'
 import { Box, Container, FormControl, Skeleton } from '@mui/material'
-import React, { useEffect } from 'react'
+import React from 'react'
 import BoxWrapper from '../components/BoxWrapper'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { theme } from '../themes'
@@ -8,14 +8,8 @@ import { AddCircle } from '@mui/icons-material';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import KeinginanList from '../components/KeinginanList';
-import { useState } from 'react';
 
-const Keinginan = () => {
-  const [loading, setLoading] = useState(true)
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 3000)
-  }, [])
-  
+const Keinginan = () => {  
   const keinginanList = [
     {
       id: 1,
@@ -123,74 +117,7 @@ const Keinginan = () => {
               </TabList>
             </Tabs>
           </Box>
-          {!loading 
-            ? <KeinginanList data={keinginanList} manipulate={true}/>
-            : <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  backgroundColor: theme.vars.softGray,
-                  borderRadius: '12px',
-                  height: '100px',
-                  cursor: 'pointer',
-                  my: 1,
-                  p: 2
-                }}
-              >
-                <Box>
-                  <Typography
-                    sx={{
-                      fontWeight: 600,
-                      mb: 1
-                    }}
-                  >
-                    {loading ? <Skeleton width={'180px'} /> : 'Beli judul'}
-                  </Typography>
-                  <Typography>{loading ? <Skeleton width={'120px'} /> : '1 bulan'}</Typography>
-                </Box>
-                <Box sx={{
-                  display: 'flex', 
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  gap: 2
-                  }}
-                >
-                  <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'end'}}>
-                    <Typography
-                      sx={{
-                        fontWeight: 600,
-                        mb: 1
-                      }}
-                    >
-                      {loading ? <Skeleton width={'120px'} /> : 'Rp. 1.000.000'}
-                    </Typography>
-                    <Typography sx={{color: theme.vars.green}}>{loading ? <Skeleton width={'140px'} /> : 'Rp. 12.000/hari'}</Typography>
-                  </Box>
-                    <Box sx={{display: 'flex', flexDirection: 'column',justifyContent: 'space-between'}}>
-                      {loading
-                        ? <Skeleton variant="rectangular" width={28} height={28}/>
-                        : <IconButton 
-                            size={'sm'} 
-                            variant='plain'
-                            sx={{color: theme.vars.blue}}
-                          >
-                            <EditRoundedIcon />
-                          </IconButton>
-                      }
-                      {loading
-                        ? <Skeleton variant="rectangular" width={28} height={28}/>
-                        : <IconButton 
-                            size={'sm'} 
-                            variant='plain'
-                            sx={{color: theme.vars.red, '&:hover': {backgroundColor: 'rgba(242, 66, 54, 0.3)'}}}
-                          >
-                            <DeleteRoundedIcon />
-                          </IconButton>
-                      }
-                    </Box>
-                </Box>
-              </Box>
-          }
+          <KeinginanList data={keinginanList} manipulate={true}/>  
         </BoxWrapper>
       </Container>
     </Box>
