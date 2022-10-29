@@ -84,7 +84,7 @@ const QuickStarter = () => {
       <HorizontalScroller>
           {quickStarter.map(item =>{
             return(
-              <QuickStarterItem data={item}/>
+              <QuickStarterItem key={item.id} data={item}/>
             )
           })}
       </HorizontalScroller>
