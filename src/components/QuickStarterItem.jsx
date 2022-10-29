@@ -1,6 +1,7 @@
 import { Button, Card, Typography } from '@mui/joy'
 import React from 'react'
 import { theme } from '../themes'
+import { formatRp } from '../utils/formatRp';
 
 const QuickStarterItem = ( {data} ) => {
   const {id, nama, nominal, target} = data;
@@ -23,9 +24,7 @@ const QuickStarterItem = ( {data} ) => {
         {nama}
       </Typography>
       <Typography>
-        {`Rp. ${new Intl.NumberFormat('ID').format(
-          nominal
-        )}`}
+        {formatRp(nominal)}
       </Typography>
       <Typography>
         {`${target} bulan`}

@@ -1,6 +1,7 @@
 import { Box } from '@mui/joy'
 import { Container } from '@mui/system'
 import React from 'react'
+import KeinginanTerbaru from '../components/KeinginanTerbaru'
 import Overview from '../components/Overview'
 import QuickAccess from '../components/QuickAccess'
 import QuickStarter from '../components/QuickStarter'
@@ -23,6 +24,7 @@ const Dashboard = () => {
         <Overview />
         <QuickAccess />
         <QuickStarter />
+        <KeinginanTerbaru />
       </Container>
     </Box>
   )
