@@ -13,6 +13,7 @@ export const theme = extendTheme({
     green: '#3DC926',
     red: '#F24236',
     shadow: '0px 2px 18px 4px rgba(0, 0, 0, 0.25)',
+    smoothShadow:'0.5px 0.5px 12px 2px #dddddd',
   },
   fontFamily: {
     body: 'Outfit, sans-serif',

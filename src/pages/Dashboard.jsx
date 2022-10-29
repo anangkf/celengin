@@ -3,6 +3,7 @@ import { Container } from '@mui/system'
 import React from 'react'
 import Overview from '../components/Overview'
 import QuickAccess from '../components/QuickAccess'
+import QuickStarter from '../components/QuickStarter'
 import { theme } from '../themes'
 
 const Dashboard = () => {
@@ -15,11 +16,13 @@ const Dashboard = () => {
       <Container
         sx={{
           pt: 7,
+          pb: 2,
           minHeight: '100vh',
         }}
       >
         <Overview />
         <QuickAccess />
+        <QuickStarter />
       </Container>
     </Box>
   )
