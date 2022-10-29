@@ -40,7 +40,7 @@ const Overview = () => {
         >
           + Rp. 300.000
           </Typography>
-          <Typography fontSize={'lg'}>Tabungan hari ini</Typography>
+          <Typography fontSize={'lg'}>Celengan hari ini</Typography>
         </Box>
       </Box>
       {/* overview */}
@@ -67,8 +67,22 @@ const Overview = () => {
             p: 2,
           }}
         >
-          <Typography fontSize={'xl2'} sx={{fontWeight: 600}}>8 Keinginan</Typography>
-          <Button onClick={() => navigate('/keinginan')} variant='plain' startDecorator={<InfoRoundedIcon />} sx={{p: 0}}>Lihat selengkapnya</Button>
+          <Typography fontSize={'xl2'} sx={{color: 'inherit', fontWeight: 600}}>8 Keinginan</Typography>
+          <Button 
+            onClick={() => navigate('/keinginan')} 
+            variant='plain' 
+            startDecorator={<InfoRoundedIcon />} 
+            sx={{
+              color: 'inherit',
+              '&:hover':{
+                backgroundColor: 'transparent'
+              },
+              p: 0,
+
+            }}
+          >
+            Lihat selengkapnya
+          </Button>
         </Box>
         <Box
           sx={{
@@ -83,8 +97,22 @@ const Overview = () => {
             p: 2,
           }}
         >
-          <Typography fontSize={'xl2'} sx={{fontWeight: 600}}>8 Tercapai</Typography>
-          <Button onClick={() => navigate('/keinginan')} variant='plain' startDecorator={<InfoRoundedIcon />} sx={{p: 0}}>Lihat selengkapnya</Button>
+          <Typography fontSize={'xl2'} sx={{color: 'inherit', fontWeight: 600}}>5 Tercapai</Typography>
+          <Button 
+            onClick={() => navigate('/keinginan')} 
+            variant='plain' 
+            startDecorator={<InfoRoundedIcon />} 
+            sx={{
+              color: 'inherit',
+              '&:hover':{
+                backgroundColor: 'transparent'
+              },
+              p: 0,
+
+            }}
+          >
+            Lihat selengkapnya
+          </Button>
         </Box>
         <Box
           sx={{
@@ -99,8 +127,22 @@ const Overview = () => {
             p: 2,
           }}
         >
-          <Typography fontSize={'xl2'} sx={{fontWeight: 600}}>8 Berjalan</Typography>
-          <Button onClick={() => navigate('/keinginan')} variant='plain' startDecorator={<InfoRoundedIcon />} sx={{p: 0}}>Lihat selengkapnya</Button>
+          <Typography fontSize={'xl2'} sx={{color: 'inherit', fontWeight: 600}}>3 Berjalan</Typography>
+          <Button 
+            onClick={() => navigate('/keinginan')} 
+            variant='plain' 
+            startDecorator={<InfoRoundedIcon />} 
+            sx={{
+              color: 'inherit',
+              '&:hover':{
+                backgroundColor: 'transparent'
+              },
+              p: 0,
+
+            }}
+          >
+            Lihat selengkapnya
+          </Button>
         </Box>
       </Box>
     </BoxWrapper>

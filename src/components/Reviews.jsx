@@ -2,6 +2,7 @@ import { Box, Card, Typography } from '@mui/joy'
 import { Rating } from '@mui/material'
 import React from 'react'
 import { theme } from '../themes'
+import HorizontalScroller from './HorizontalScroller'
 
 const Reviews = () => {
 
@@ -83,26 +84,8 @@ const Reviews = () => {
       >
         What they says
       </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: '300px',
-          scrollBehavior: 'smooth',
-          scrollSnapType: 'x mandatory',
-          overflowX: 'auto',
-          gap: 4,
-          // hide-scrollbar
-          '&::-webkit-scrollbar':{
-            display: 'none'
-          },
-          msOverflowStyle: 'none',
-          scrollbarWidth: 'none'
-        }}
-      > 
-        {reviews.map(({rating, user, comment}, idx) =>{
+      <HorizontalScroller>
+      {reviews.map(({rating, user, comment}, idx) =>{
           return(
             <Card
               key={`${user}_${idx}`}
@@ -114,7 +97,7 @@ const Reviews = () => {
                 scrollSnapAlign: 'center',
                 backgroundColor: theme.vars.light,
                 borderRadius: '24px',
-                boxShadow: '0.5px 0.5px 12px 2px #dddddd'
+                boxShadow: theme.vars.smoothShadow,
               }}
             >
               <Rating value={rating} readOnly />
@@ -139,7 +122,7 @@ const Reviews = () => {
             </Card>
           )
         })}
-      </Box>
+      </HorizontalScroller>
     </Box>
   )
 }
