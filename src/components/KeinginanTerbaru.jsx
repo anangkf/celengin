@@ -7,6 +7,43 @@ import BoxWrapper from './BoxWrapper'
 import KeinginanList from './KeinginanList'
 
 const KeinginanTerbaru = () => {
+  const keinginanTerbaruList = [
+    {
+      id: 1,
+      judul: 'Beli motor',
+      nominal: 1000000,
+      target: 2,
+      celengan_per_hari: 20000
+    },
+    {
+      id: 2,
+      judul: 'Beli iPad',
+      nominal: 1000000,
+      target: 1,
+      celengan_per_hari: 20000
+    },
+    {
+      id: 3,
+      judul: 'Beli PC',
+      nominal: 2000000,
+      target: 3,
+      celengan_per_hari: 20000
+    },
+    {
+      id: 4,
+      judul: 'Naik haji',
+      nominal: 1000000,
+      target: 12,
+      celengan_per_hari: 20000
+    },
+    {
+      id: 5,
+      judul: 'Tunangan',
+      nominal: 5000000,
+      target: 4,
+      celengan_per_hari: 20000
+    },
+  ]
   return (
     <BoxWrapper>
       <Box
@@ -40,7 +77,7 @@ const KeinginanTerbaru = () => {
           <Link to='/keinginan'>Lihat semua</Link>
         </Button>
       </Box>
-      <KeinginanList />
+      <KeinginanList data={keinginanTerbaruList} manipulate={false}/>
     </BoxWrapper>
   )
 }
