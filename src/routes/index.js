@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Dashboard from "../pages/Dashboard"
 import Keinginan from "../pages/Keinginan"
+import KeinginanDetail from "../pages/KeinginanDetail"
 import Landing from "../pages/Landing"
 import Layout from "../pages/Layout"
 import Login from "../pages/Login"
@@ -15,6 +16,7 @@ const SetupRouter = () => {
           <Route index element={<Landing />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="keinginan" element={<Keinginan />} />
+          <Route path="keinginan/:id" element={<KeinginanDetail />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
