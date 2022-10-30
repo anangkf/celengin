@@ -19,9 +19,22 @@ export const theme = extendTheme({
     body: 'Outfit, sans-serif',
     color: '#011627'
   },
-  // typography: {
-  //   fontColor: '#011627',
-  // },
+  components: {
+    JoyModalDialog: {
+      defaultProps: {
+        layout: 'top',
+      },
+      styleOverrides: {
+        root: ({ ownerState }) => ({
+          ...(ownerState.layout === 'top' && {
+            top: '12vh',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          }),
+        }),
+      },
+    },
+  },
 })
 
 export const muiTheme = extendMuiTheme({
