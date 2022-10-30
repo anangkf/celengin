@@ -39,7 +39,7 @@ const ModalAddKeinginan = () =>{
       >
         Buat sendiri
       </Button>
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <Modal sx={{zIndex: 50}} open={open} onClose={() => setOpen(false)}>
         <ModalDialog
           aria-labelledby="basic-modal-dialog-title"
           aria-describedby="basic-modal-dialog-description"
@@ -81,6 +81,7 @@ const ModalAddKeinginan = () =>{
                   label="set target"
                   inputFormat="MM/DD/YYYY"
                   value={value}
+                  sx={{zIndex: 50}}
                   onChange={handleChange}
                   renderInput={(params) => <MuiTextField {...params} />}
                 />
