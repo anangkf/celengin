@@ -96,4 +96,4 @@ const KeinginanDetailInfo = ({data}) => {
   )
 }
 
-export default KeinginanDetailInfo
+export default KeinginanDetailInfo;
