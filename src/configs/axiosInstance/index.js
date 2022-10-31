@@ -7,5 +7,5 @@ const config = {
     'x-hasura-admin-secret': CONST.ADMIN_SECRET
   }
 }
-console.log(CONST)
+
 export const axiosInstance = axios.create(config)
