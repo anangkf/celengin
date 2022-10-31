@@ -2,11 +2,55 @@ import { Box, Button, List, ListItem } from '@mui/joy'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { theme } from '../themes'
+import Auth from '../utils/Auth'
 import Logo from './Logo'
+
+const notAuthorized = [
+  {
+    name: 'Get started',
+    path: '/login'
+  },
+  {
+    name: 'Features',
+    path: '/#features'
+  },
+  {
+    name: 'About',
+    path: '/#about'
+  },
+  {
+    name: 'Contact',
+    path: '/#contact'
+  },
+]
+
+const authorized = [
+  {
+    name: 'Dashboard',
+    path: '/dashboard',
+    type: 'anchor'
+  },
+  {
+    name: 'Keinginanku',
+    path: '/keinginan',
+    type: 'anchor'
+  },
+  {
+    name: 'Beri rating',
+    handler: 'function' ,
+    type: 'handler'
+  },
+  {
+    name: 'Feedback',
+    handler: 'function',
+    type: 'handler'
+  },
+]
 
 const Navbar = () => {
   const navigate = useNavigate()
-
+  const authStatus = Auth.isAuthorized()
+  
   return (
     <Box
       sx={{
@@ -33,42 +77,61 @@ const Navbar = () => {
           px: 12,
         }}
       >
-        <ListItem
-          sx={{
-            color: theme.vars.dark,
-            typography: 'body1',
-            // '&:hover':{
-            //   backgroundColor: theme.vars.dark,
-            //   color: theme.vars.dark
-            // }
-          }}
-        >
-          <Link color='inherit' style={{textDecoration: 'none'}} to={'/login'}>Get started</Link>
-        </ListItem>
-        <ListItem
-          sx={{
-            color: theme.vars.dark,
-            typography: 'body1',
-          }}
-        >
-          <Link color='inherit' style={{textDecoration: 'none'}} to={'/login'}>Features</Link>
-        </ListItem>
-        <ListItem
-          sx={{
-            color: theme.vars.dark,
-            typography: 'body1',
-          }}
-        >
-          <Link color='inherit' style={{textDecoration: 'none'}} to={'/login'}>About</Link>
-        </ListItem>
-        <ListItem
-          sx={{
-            color: theme.vars.dark,
-            typography: 'body1',
-          }}
-        >
-          <Link color='inherit' style={{textDecoration: 'none'}} to={'/login'}>Contact</Link>
-        </ListItem>
+        {authStatus ? 
+          authorized.map((item, idx) =>{
+              if(item.type === 'anchor'){
+                return(
+                  <ListItem
+                    key={idx}
+                    sx={{
+                      color: theme.vars.dark,
+                      transition: '1s',
+                      fontSize: 'md',
+                      '&:hover':{
+                        transform: 'scale(1.1)'
+                      }
+                    }}
+                  >
+                    <Link color='inherit' style={{textDecoration: 'none'}} to={`${item.path}`}>{item.name}</Link>
+                  </ListItem>
+                )
+              }
+              return(
+                <ListItem
+                  onClick={()=> item.handler()}
+                  key={idx}
+                  sx={{
+                    color: theme.vars.dark,
+                    transition: '1s',
+                    cursor: 'pointer',
+                    fontSize: 'md',
+                    '&:hover':{
+                      transform: 'scale(1.1)'
+                    }
+                  }}
+                >
+                  {item.name}
+                </ListItem>
+              )
+          })
+          : notAuthorized.map(({name, path}, idx) =>{
+            return(
+              <ListItem
+                key={idx}
+                sx={{
+                  color: theme.vars.dark,
+                  transition: '1s',
+                  fontSize: 'md',
+                  '&:hover':{
+                    transform: 'scale(1.1)'
+                  }
+                }}
+              >
+                <Link color='inherit' style={{textDecoration: 'none'}} to={`${path}`}>{name}</Link>
+              </ListItem>
+            )
+          })
+        }
       </List>
       
       <Box

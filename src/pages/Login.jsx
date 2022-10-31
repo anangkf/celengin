@@ -8,7 +8,7 @@ import Ilustration1 from '../assets/img/login1.png'
 import Ilustration2 from '../assets/img/login2.png'
 import SmallFooter from '../components/SmallFooter'
 import { compare } from 'bcryptjs'
-import Cookies from 'js-cookie';
+import Auth from '../utils/Auth';
 
 const LOGIN_DATA = {
   username: '',
@@ -45,10 +45,7 @@ const Login = () => {
         compare(loginData.password, userData.password)
           .then(res => {
             if(res){
-              Cookies.set('id', userData.id)
-              Cookies.set('firstname', userData.firstname)
-              Cookies.set('lastname', userData.lastname)
-              Cookies.set('username', userData.username)
+              Auth.storeUserInfoToCookie(res, userData);
               setLoginData(LOGIN_DATA);
               navigate('/dashboard');
             }else{
