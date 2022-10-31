@@ -1,14 +1,71 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Button, TextField, Typography } from '@mui/joy'
 import { theme } from '../themes'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import APIUser from '../apis/user.api';
 import Logo from '../components/Logo'
 import Ilustration1 from '../assets/img/login1.png'
 import Ilustration2 from '../assets/img/login2.png'
 import SmallFooter from '../components/SmallFooter'
+import { compare } from 'bcryptjs'
+import Cookies from 'js-cookie';
 
+const LOGIN_DATA = {
+  username: '',
+  password: '',
+}
 
 const Login = () => {
+  const [loginData, setLoginData] = useState(LOGIN_DATA)
+  const [isValid, setIsValid] = useState({
+    username: true,
+    password: true,
+  })
+
+  const navigate = useNavigate();
+  
+  const handleChange = (e) =>{
+    const {name, value} = e.target;
+
+    setLoginData({
+      ...loginData,
+      [name]: value
+    })
+
+    setIsValid({
+      username: true,
+      password: true
+    })
+  }
+
+  const handleLogin = () =>{
+    APIUser.login(loginData.username)
+      .then(res =>{
+        const userData = res.data.results[0]
+        compare(loginData.password, userData.password)
+          .then(res => {
+            if(res){
+              Cookies.set('id', userData.id)
+              Cookies.set('firstname', userData.firstname)
+              Cookies.set('lastname', userData.lastname)
+              Cookies.set('username', userData.username)
+              setLoginData(LOGIN_DATA);
+              navigate('/dashboard');
+            }else{
+              setIsValid({
+                ...isValid,
+                password: false
+              })
+            }
+          })
+        })
+        .catch(() => {
+          setIsValid({
+            ...isValid,
+            username: false,
+          })
+        })
+  }
   return (
     <Box
       sx={{
@@ -20,34 +77,34 @@ const Login = () => {
         alignItems: 'center',
       }}
     > 
-    {/* illustration 1 */}
-    <Box
-      sx={{
-        position: 'absolute',
-        transform: 'translate(-80%, 15%)'
-      }}
-    >
-      <img
-        width={'80%'}
-        src={Ilustration1}
-        loading='lazy'
-        alt=''
-      />
-    </Box>
-    {/* illustration 2 */}
-    <Box
-      sx={{
-        position: 'absolute',
-        transform: 'translate(90%, 0)'
-      }}
-    >
-      <img
-        width={'85%'}
-        src={Ilustration2}
-        loading='lazy'
-        alt=''
-      />
-    </Box>
+      {/* illustration 1 */}
+      <Box
+        sx={{
+          position: 'absolute',
+          transform: 'translate(-80%, 15%)'
+        }}
+      >
+        <img
+          width={'80%'}
+          src={Ilustration1}
+          loading='lazy'
+          alt=''
+        />
+      </Box>
+      {/* illustration 2 */}
+      <Box
+        sx={{
+          position: 'absolute',
+          transform: 'translate(90%, 0)'
+        }}
+      >
+        <img
+          width={'85%'}
+          src={Ilustration2}
+          loading='lazy'
+          alt=''
+        />
+      </Box>
       <Box
         sx={{
           display: 'flex',
@@ -84,20 +141,30 @@ const Login = () => {
           </Typography>
           
           <TextField 
+            onChange = {(e) =>handleChange(e)}
             label="username" 
+            name="username" 
             placeholder="your username…" 
+            error={!isValid.username}
+            helperText={!isValid.username ? `Username ${loginData.username} belum terdaftar` : ''}
             variant="outlined"
+            autoFocus
             fullWidth 
           />
           <TextField 
+            onChange = {(e) =>handleChange(e)}
             label="password" 
+            name="password" 
             type='password'
             placeholder="your password…" 
+            error={!isValid.password}
+            helperText={!isValid.password ? 'Password tidak sesuai' : ''}
             variant="outlined"
             fullWidth 
           />
 
           <Button
+            onClick={handleLogin}
             variant='solid'
             sx={{
               color: theme.vars.light,
@@ -113,9 +180,9 @@ const Login = () => {
             Masuk
           </Button>
 
-          <Typography>Belum punya akun?
-            <Typography>
-              <Link to='/register' color={theme.vars.blue}>Daftar</Link>
+          <Typography>{`Belum punya akun? `}
+            <Typography sx={{color: theme.vars.blue}}>
+              <Link to='/register'>Daftar</Link>
             </Typography>
           </Typography>
         </Box>

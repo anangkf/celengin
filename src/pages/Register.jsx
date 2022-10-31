@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, FormHelperText, TextField, Typography } from '@mui/joy'
+import { Box, Button, TextField, Typography } from '@mui/joy'
 import { theme } from '../themes'
 import { Link, useNavigate } from 'react-router-dom'
 import Logo from '../components/Logo'
@@ -37,9 +37,12 @@ const Register = () => {
         const data = {...userData, password: bcrypter(userData.password)};
         delete data.confirmPassword;
         
-        APIUser.register(data);
-        setUserData(USER_DATA);
-        setTimeout(() => navigate('/login'), 750)
+        APIUser.register(data)
+          .then(() =>{
+            setUserData(USER_DATA);
+            setTimeout(() => navigate('/login'), 2000)
+          })
+          .catch(err => console.log(err.response))
       }else{
         setIsValid(false)
         setTimeout(() => setIsValid(true), 1000)
@@ -118,6 +121,7 @@ const Register = () => {
               value={userData.firstname}
               placeholder="your firstname…" 
               variant="outlined"
+              autoFocus
               required
               sx={{
                 maxWidth: '48%'
@@ -146,42 +150,44 @@ const Register = () => {
             required
             fullWidth 
           />
-          <Box sx={{width: '100%',}}>
-            <Box
+
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between'
+            }}
+          >
+            <TextField
+              onChange={handleChange}
+              label="password" 
+              name="password" 
+              value={userData.password}
+              placeholder="enter password…" 
+              type='password'
+              variant="outlined"
+              required
+              error={!isValid}
+              helperText={!isValid ? 'Password tidak cocok' : ''}
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between'
+                maxWidth: '48%'
               }}
-            >
-              <TextField
-                onChange={handleChange}
-                label="password" 
-                name="password" 
-                value={userData.password}
-                placeholder="enter password…" 
-                type='password'
-                variant="outlined"
-                required
-                sx={{
-                  maxWidth: '48%'
-                }}
-              />
-              
-              <TextField 
-                onChange={handleChange}
-                label="confirm password" 
-                name="confirmPassword" 
-                value={userData.confirmPassword}
-                placeholder="re-enter password…" 
-                type='password'
-                variant="outlined"
-                required
-                sx={{
-                  maxWidth: '48%'
-                }}
-              />
-            </Box>
-            {!isValid && <FormHelperText sx={{color: theme.vars.red,}}>Password tidak cocok!</FormHelperText>}
+            />
+            
+            <TextField 
+              onChange={handleChange}
+              label="confirm password" 
+              name="confirmPassword" 
+              value={userData.confirmPassword}
+              placeholder="re-enter password…" 
+              type='password'
+              variant="outlined"
+              required
+              error={!isValid}
+              sx={{
+                maxWidth: '48%'
+              }}
+            />
           </Box>
 
           <Button
