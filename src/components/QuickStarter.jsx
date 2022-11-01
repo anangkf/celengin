@@ -7,6 +7,7 @@ import { fetchTemplate } from '../store/features/templates/templateSlice';
 import { theme } from '../themes';
 import BoxWrapper from './BoxWrapper';
 import HorizontalScroller from './HorizontalScroller'
+import ModalAddKeinginan from './ModalAddKeinginan'
 import QuickStarterItem from './QuickStarterItem';
 
 const QuickStarter = () => {
@@ -34,7 +35,8 @@ const QuickStarter = () => {
         >
           Quick starter
         </Typography>
-        <Button
+        <ModalAddKeinginan />
+        {/* <Button
           sx={{
             backgroundColor: theme.vars.dark,
             width: '120px',
@@ -46,7 +48,7 @@ const QuickStarter = () => {
           }}
         >
           Buat sendiri
-        </Button>
+        </Button> */}
       </Box>
       <HorizontalScroller>
           {!loading
