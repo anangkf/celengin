@@ -35,7 +35,7 @@ const QuickStarter = () => {
         >
           Quick starter
         </Typography>
-        <ModalAddKeinginan />
+        <ModalAddKeinginan text={'Buat sendiri'}/>
         {/* <Button
           sx={{
             backgroundColor: theme.vars.dark,

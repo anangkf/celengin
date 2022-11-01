@@ -17,15 +17,36 @@ import { AddCircle, KeyboardArrowDown } from '@mui/icons-material';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment/moment';
+import { getDateDiff } from '../utils/getDateDiff';
+import Auth from '../utils/Auth';
+import { getCelenganPreset } from '../utils/getCelenganPreset';
+import { useDispatch } from 'react-redux';
+import { createKeinginan } from '../store/features/keinginan/keinginanSlice';
 
-const ModalAddKeinginan = () =>{
+const ModalAddKeinginan = ({text}) =>{
   const [open, setOpen] = useState(false);
-
-  const [value, setValue] = React.useState(moment('2022-08-18T21:11:54'));
-
+  const [value, setValue] = useState(moment());
+  
+  const dispatch = useDispatch()
   const handleChange = (newValue) => {
     setValue(newValue);
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const user_id = Auth.getUserId()
+    const formData = new FormData(e.target)
+    const judul = formData.get('nama')
+    const nominal = formData.get('nominal')
+    const target = formData.get('date')
+    const prioritas = formData.get('prioritas')
+    const {days, months} = getDateDiff(target);
+    const preset = getCelenganPreset(nominal, days, months)
+    
+    dispatch(createKeinginan({user_id, judul, nominal, target, ...preset, prioritas}))
+    setOpen(false);
+  }
+
   return (
     <>
       <Button
@@ -37,7 +58,7 @@ const ModalAddKeinginan = () =>{
         startDecorator={<AddCircle />}
         onClick={() => setOpen(true)}
       >
-        Buat sendiri
+        {text}
       </Button>
       <Modal sx={{zIndex: 50}} open={open} onClose={() => setOpen(false)}>
         <ModalDialog
@@ -59,23 +80,20 @@ const ModalAddKeinginan = () =>{
           >
             Buat keinginan baru
           </Typography>
-          <Typography
+          {/* <Typography
             id="basic-modal-dialog-description"
             mt={0.5}
             mb={2}
             textColor="text.tertiary"
           >
             Fill in the information of the project.
-          </Typography>
+          </Typography> */}
           <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              setOpen(false);
-            }}
+            onSubmit={handleSubmit}
           >
             <Stack spacing={2}>
-              <TextField label="nama" autoFocus required />
-              <TextField type='number' label="nominal" required />
+              <TextField label="judul" name="nama" autoFocus required />
+              <TextField type='number' label="nominal" name="nominal" required />
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DesktopDatePicker
                   label="set target"
@@ -83,7 +101,8 @@ const ModalAddKeinginan = () =>{
                   value={value}
                   sx={{zIndex: 50}}
                   onChange={handleChange}
-                  renderInput={(params) => <MuiTextField {...params} />}
+                  disablePast
+                  renderInput={(params) => <MuiTextField required name='date' variant={'standard'} {...params} />}
                 />
               </LocalizationProvider>
               <FormLabel id="select-field-demo-label" htmlFor="select-prioritas">
@@ -92,10 +111,12 @@ const ModalAddKeinginan = () =>{
                 id="select-prioritas"
                 placeholder="Pilih prioritas…"
                 defaultValue={3}
+                name='prioritas'
                 required
                 indicator={<KeyboardArrowDown />}
                 sx={{
                   width: '100%',
+                  mb: 2,
                   [`& .${selectClasses.indicator}`]: {
                     transition: '0.2s',
                     [`&.${selectClasses.expanded}`]: {
@@ -109,7 +130,15 @@ const ModalAddKeinginan = () =>{
                     <Option value={3}>Low</Option>
               </Select>
               </FormLabel>
-              <Button type="submit">Submit</Button>
+              <Button 
+                type="submit"
+                sx={{
+                  backgroundColor: theme.vars.dark,
+                  '&:hover':{backgroundColor: theme.vars.dark, opacity: 0.85}
+                }}
+              >
+                Submit
+              </Button>
             </Stack>
           </form>
         </ModalDialog>

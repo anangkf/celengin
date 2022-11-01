@@ -26,6 +26,15 @@ export const fetchKeinginanList = createAsyncThunk('fetch/keinginanList', async(
   }
 })
 
+export const createKeinginan = createAsyncThunk('create/keinginan', async(data) =>{
+  try{
+    const res = await APIKeinginan.createKeinginan(data);
+    return res.data.results.returning[0]
+  }catch(err){
+    console.log(err.response)
+  }
+})
+
 export const KeinginanSlice = createSlice({
   name: 'keinginan',
   initialState,
@@ -44,6 +53,14 @@ export const KeinginanSlice = createSlice({
       .addCase(fetchKeinginanList.fulfilled, (state, action) =>{
         state.data = action.payload
         state.selesai = action.payload.filter(x => x.selesai === true)
+      })
+      .addCase(createKeinginan.pending, (state) =>{
+        state.loading = true
+      })
+      .addCase(createKeinginan.fulfilled, (state, action) =>{
+        state.data.unshift(action.payload)
+        state.terbaru.unshift(action.payload)
+        state.loading = false
       })
   }
 })

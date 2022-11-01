@@ -6,6 +6,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { theme } from '../themes'
 import { AddCircle } from '@mui/icons-material';
 import KeinginanList from '../components/KeinginanList';
+import ModalAddKeinginan from '../components/ModalAddKeinginan';
 
 const Keinginan = () => {  
   const keinginanList = [
@@ -13,35 +14,35 @@ const Keinginan = () => {
       id: 1,
       judul: 'Beli motor',
       nominal: 1000000,
-      target: 2,
+      target: '2022-12-01',
       celengan_per_hari: 20000
     },
     {
       id: 2,
       judul: 'Beli iPad',
       nominal: 1000000,
-      target: 1,
+      target: '2023-03-11',
       celengan_per_hari: 20000
     },
     {
       id: 3,
       judul: 'Beli PC',
       nominal: 2000000,
-      target: 3,
+      target: '2023-02-08',
       celengan_per_hari: 20000
     },
     {
       id: 4,
       judul: 'Naik haji',
-      nominal: 1000000,
-      target: 12,
+      nominal: 100000000,
+      target: '2024-12-01',
       celengan_per_hari: 20000
     },
     {
       id: 5,
       judul: 'Tunangan',
       nominal: 5000000,
-      target: 4,
+      target: '2023-08-22',
       celengan_per_hari: 20000
     },
   ]
@@ -86,7 +87,8 @@ const Keinginan = () => {
                 placeholder="cari keinginan…" 
               />
             </FormControl>
-            <Button 
+            <ModalAddKeinginan text={'Buat baru'} />
+            {/* <Button 
               startDecorator={<AddCircle />}
               sx={{
                 backgroundColor: theme.vars.dark,
@@ -98,7 +100,7 @@ const Keinginan = () => {
               }}
             >
               Buat baru
-            </Button>
+            </Button> */}
           </Box>
           <Box
             sx={{display: 'flex', justifyContent: 'center', my: 3}}

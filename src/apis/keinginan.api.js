@@ -16,7 +16,14 @@ const APIKeinginan ={
     }catch(err){
       return err
     }
-
+  },
+  async createKeinginan(data){
+    try{
+      const res = await axiosInstance.post(`/keinginan`,data)
+      return res
+    }catch(err){
+      return err
+    }
   }
 }
 
