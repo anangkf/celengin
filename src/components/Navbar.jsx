@@ -2,10 +2,19 @@ import { Box, Button, List, ListItem } from '@mui/joy'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { theme } from '../themes'
+import Auth from '../utils/Auth'
 import Logo from './Logo'
+import authorized from '../mock/navbarAuthorized'
+import notAuthorized from '../mock/navbarUnauthorized'
+import { getInitialName } from '../utils/getInitialName'
+import UserAvatar from './UserAvatar'
+
 
 const Navbar = () => {
   const navigate = useNavigate()
+  const authStatus = Auth.isAuthorized()
+  const userDetails = Auth.getUserDetails()
+  const initialName = userDetails && getInitialName(userDetails?.firstname, userDetails?.lastname)
 
   return (
     <Box
@@ -33,83 +42,104 @@ const Navbar = () => {
           px: 12,
         }}
       >
-        <ListItem
-          sx={{
-            color: theme.vars.dark,
-            typography: 'body1',
-            // '&:hover':{
-            //   backgroundColor: theme.vars.dark,
-            //   color: theme.vars.dark
-            // }
-          }}
-        >
-          <Link color='inherit' style={{textDecoration: 'none'}} to={'/login'}>Get started</Link>
-        </ListItem>
-        <ListItem
-          sx={{
-            color: theme.vars.dark,
-            typography: 'body1',
-          }}
-        >
-          <Link color='inherit' style={{textDecoration: 'none'}} to={'/login'}>Features</Link>
-        </ListItem>
-        <ListItem
-          sx={{
-            color: theme.vars.dark,
-            typography: 'body1',
-          }}
-        >
-          <Link color='inherit' style={{textDecoration: 'none'}} to={'/login'}>About</Link>
-        </ListItem>
-        <ListItem
-          sx={{
-            color: theme.vars.dark,
-            typography: 'body1',
-          }}
-        >
-          <Link color='inherit' style={{textDecoration: 'none'}} to={'/login'}>Contact</Link>
-        </ListItem>
+        {authStatus ? 
+          authorized.map((item, idx) =>{
+              if(item.type === 'anchor'){
+                return(
+                  <ListItem
+                    key={idx}
+                    sx={{
+                      color: theme.vars.dark,
+                      transition: '1s',
+                      fontSize: 'md',
+                      '&:hover':{
+                        transform: 'scale(1.1)'
+                      }
+                    }}
+                  >
+                    <Link color='inherit' style={{textDecoration: 'none'}} to={`${item.path}`}>{item.name}</Link>
+                  </ListItem>
+                )
+              }
+              return(
+                <ListItem
+                  onClick={()=> item.handler()}
+                  key={idx}
+                  sx={{
+                    color: theme.vars.dark,
+                    transition: '1s',
+                    cursor: 'pointer',
+                    fontSize: 'md',
+                    '&:hover':{
+                      transform: 'scale(1.1)'
+                    }
+                  }}
+                >
+                  {item.name}
+                </ListItem>
+              )
+          })
+          : notAuthorized.map(({name, path}, idx) =>{
+            return(
+              <ListItem
+                key={idx}
+                sx={{
+                  color: theme.vars.dark,
+                  transition: '1s',
+                  fontSize: 'md',
+                  '&:hover':{
+                    transform: 'scale(1.1)'
+                  }
+                }}
+              >
+                <Link color='inherit' style={{textDecoration: 'none'}} to={`${path}`}>{name}</Link>
+              </ListItem>
+            )
+          })
+        }
       </List>
-      
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: 190
-        }}
-      >
-        <Button
-          onClick={() => navigate('/login')}
-          variant='plain'
+      {authStatus 
+        ? <UserAvatar initial={initialName}/>
+        : <Box
           sx={{
-            color: theme.vars.dark,
-            borderColor: theme.vars.dark,
-            px: 3,
-            '&:hover': {
-              backgroundColor: theme.vars.dark,
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: 190
+          }}
+        >
+          <Button
+            onClick={() => navigate('/login')}
+            variant='plain'
+            sx={{
+              color: theme.vars.dark,
               borderColor: theme.vars.dark,
-              color: theme.vars.light
-            }
-          }}
-        >
-          Masuk
-        </Button>
-        <Button
-          onClick={() => navigate('/register')}
-          variant='solid'
-          sx={{
-            color: theme.vars.light,
-            backgroundColor: theme.vars.dark,
-            px: 3,
-            '&:hover': {
+              px: 3,
+              '&:hover': {
+                backgroundColor: theme.vars.dark,
+                borderColor: theme.vars.dark,
+                color: theme.vars.light
+              }
+            }}
+          >
+            Masuk
+          </Button>
+          <Button
+            onClick={() => navigate('/register')}
+            variant='solid'
+            sx={{
+              color: theme.vars.light,
               backgroundColor: theme.vars.dark,
-              opacity: [0.85]
-            }
-          }}
-        >
-          Daftar
-        </Button>
-      </Box>
+              px: 3,
+              '&:hover': {
+                backgroundColor: theme.vars.dark,
+                opacity: [0.85]
+              }
+            }}
+          >
+            Daftar
+          </Button>
+        </Box>
+      }
     </Box>
   )
 }
