@@ -8,6 +8,15 @@ const APIKeinginan ={
     }catch(err){
       return err
     }
+  },
+  async getKeinginanList(userId){
+    try{
+      const res = await axiosInstance.get(`keinginan/user/${userId}`)
+      return res
+    }catch(err){
+      return err
+    }
+
   }
 }
 

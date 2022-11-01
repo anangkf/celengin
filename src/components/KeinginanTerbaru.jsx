@@ -5,16 +5,15 @@ import { Link } from 'react-router-dom'
 import { theme } from '../themes'
 import BoxWrapper from './BoxWrapper'
 import KeinginanList from './KeinginanList'
-import Auth from '../utils/Auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchKeinginanTerbaru } from '../store/features/keinginan/keinginanSlice'
 
-const KeinginanTerbaru = () => {
-  const userID = Auth.getUserId()
+const KeinginanTerbaru = ({userData}) => {
+  const {userId: userID } = userData
   const dispatch = useDispatch()
   const keinginanState = useSelector(state => state.keinginan)
   const {terbaru, loading} = keinginanState;
-
+  
   useEffect(() => {
     dispatch(fetchKeinginanTerbaru(userID))
   }, [dispatch])
