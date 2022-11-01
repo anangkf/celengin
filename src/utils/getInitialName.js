@@ -4,7 +4,6 @@
  * @param {*} lastname lastname
  */
 export const getInitialName = (firstname, lastname) =>{
-  return(
-    firstname[0].toUpperCase() + lastname[0].toUpperCase
-  )
+  const initial = firstname.charAt(0) + lastname.charAt(0)
+  return initial.toUpperCase()
 }

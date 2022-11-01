@@ -13,10 +13,10 @@ const Auth ={
    * @param {*} navigate a function used to navigate(useNavigate())
    */
   logOut(navigate){
-    Cookies.set('id');
-    Cookies.set('firstname');
-    Cookies.set('lastname');
-    Cookies.set('username');
+    Cookies.remove('id');
+    Cookies.remove('firstname');
+    Cookies.remove('lastname');
+    Cookies.remove('username');
     navigate('/');
   },
   getUserDetails(){

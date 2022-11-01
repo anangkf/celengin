@@ -4,53 +4,18 @@ import { Link, useNavigate } from 'react-router-dom'
 import { theme } from '../themes'
 import Auth from '../utils/Auth'
 import Logo from './Logo'
+import authorized from '../mock/navbarAuthorized'
+import notAuthorized from '../mock/navbarUnauthorized'
+import { getInitialName } from '../utils/getInitialName'
+import UserAvatar from './UserAvatar'
 
-const notAuthorized = [
-  {
-    name: 'Get started',
-    path: '/login'
-  },
-  {
-    name: 'Features',
-    path: '/#features'
-  },
-  {
-    name: 'About',
-    path: '/#about'
-  },
-  {
-    name: 'Contact',
-    path: '/#contact'
-  },
-]
-
-const authorized = [
-  {
-    name: 'Dashboard',
-    path: '/dashboard',
-    type: 'anchor'
-  },
-  {
-    name: 'Keinginanku',
-    path: '/keinginan',
-    type: 'anchor'
-  },
-  {
-    name: 'Beri rating',
-    handler: 'function' ,
-    type: 'handler'
-  },
-  {
-    name: 'Feedback',
-    handler: 'function',
-    type: 'handler'
-  },
-]
 
 const Navbar = () => {
   const navigate = useNavigate()
   const authStatus = Auth.isAuthorized()
-  
+  const userDetails = Auth.getUserDetails()
+  const initialName = userDetails && getInitialName(userDetails?.firstname, userDetails?.lastname)
+
   return (
     <Box
       sx={{
@@ -133,46 +98,48 @@ const Navbar = () => {
           })
         }
       </List>
-      
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: 190
-        }}
-      >
-        <Button
-          onClick={() => navigate('/login')}
-          variant='plain'
+      {authStatus 
+        ? <UserAvatar initial={initialName}/>
+        : <Box
           sx={{
-            color: theme.vars.dark,
-            borderColor: theme.vars.dark,
-            px: 3,
-            '&:hover': {
-              backgroundColor: theme.vars.dark,
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: 190
+          }}
+        >
+          <Button
+            onClick={() => navigate('/login')}
+            variant='plain'
+            sx={{
+              color: theme.vars.dark,
               borderColor: theme.vars.dark,
-              color: theme.vars.light
-            }
-          }}
-        >
-          Masuk
-        </Button>
-        <Button
-          onClick={() => navigate('/register')}
-          variant='solid'
-          sx={{
-            color: theme.vars.light,
-            backgroundColor: theme.vars.dark,
-            px: 3,
-            '&:hover': {
+              px: 3,
+              '&:hover': {
+                backgroundColor: theme.vars.dark,
+                borderColor: theme.vars.dark,
+                color: theme.vars.light
+              }
+            }}
+          >
+            Masuk
+          </Button>
+          <Button
+            onClick={() => navigate('/register')}
+            variant='solid'
+            sx={{
+              color: theme.vars.light,
               backgroundColor: theme.vars.dark,
-              opacity: [0.85]
-            }
-          }}
-        >
-          Daftar
-        </Button>
-      </Box>
+              px: 3,
+              '&:hover': {
+                backgroundColor: theme.vars.dark,
+                opacity: [0.85]
+              }
+            }}
+          >
+            Daftar
+          </Button>
+        </Box>
+      }
     </Box>
   )
 }
