@@ -60,6 +60,15 @@ export const addCelengan = createAsyncThunk('add/celengan', async(data) =>{
   }
 })
 
+export const getCelenganList = createAsyncThunk('fetch/celengan', async(userId) =>{
+  try{
+    const res = await APIKeinginan.getCelenganList(userId);
+    return res.data.results
+  }catch(err){
+    console.log(err.response)
+  }
+})
+
 export const KeinginanSlice = createSlice({
   name: 'keinginan',
   initialState,
@@ -101,6 +110,13 @@ export const KeinginanSlice = createSlice({
           }
           return item
         })
+        state.loading = false
+      })
+      .addCase(getCelenganList.pending, (state) =>{
+        state.loading = true
+      })
+      .addCase(getCelenganList.fulfilled, (state, action) =>{
+        state.celengan = action.payload
         state.loading = false
       })
   }

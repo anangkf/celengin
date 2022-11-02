@@ -6,20 +6,35 @@ import BoxWrapper from './BoxWrapper'
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchKeinginanList } from '../store/features/keinginan/keinginanSlice'
+import { fetchKeinginanList, getCelenganList } from '../store/features/keinginan/keinginanSlice'
+import moment from 'moment/moment'
+import { formatRp } from '../utils/formatRp';
 
 const Overview = ({userData}) => {
-  const {userId, firstname, lastname, username} = userData
+  const {userId, firstname} = userData
   
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const celenganList = useSelector(state => state.keinginan.celengan)
   const keinginanList = useSelector(state => state.keinginan.data)
   const selesai = useSelector(state => state.keinginan.selesai)
-
+  
+  const celenganHariIni = 
+  celenganList
+    .filter(item =>{
+      const today = moment().format('YYYY-MM-DD')
+      return item.created_at.includes(today)
+    })
+    ?.map(val =>{
+      return val.nominal
+    })
+    ?.reduce((acc, currVal) => acc + currVal, 0)
+    
   useEffect(() => {
     dispatch(fetchKeinginanList(userId))
-  }, [dispatch])
+    dispatch(getCelenganList(userId))
+  }, [dispatch, userId])
   
   return (
     <BoxWrapper>
@@ -51,7 +66,7 @@ const Overview = ({userData}) => {
             color: theme.vars.green
           }}
         >
-          + Rp. 300.000
+          {`+ ${formatRp(celenganHariIni)}`}
           </Typography>
           <Typography fontSize={'lg'}>Celengan hari ini</Typography>
         </Box>

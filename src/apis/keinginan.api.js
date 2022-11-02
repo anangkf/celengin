@@ -50,6 +50,14 @@ const APIKeinginan ={
     }catch(err){
       return err
     }
+  },
+  async getCelenganList(userId){
+    try{
+      const res = await axiosInstance.get(`/celengan/user/${userId}`)
+      return res
+    }catch(err){
+      return err
+    }
   }
 }
 
