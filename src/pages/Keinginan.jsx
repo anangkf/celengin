@@ -1,51 +1,24 @@
-import { Button, Input, Tab, TabList, Tabs, Typography } from '@mui/joy'
+import { Input, Tab, TabList, Tabs, Typography } from '@mui/joy'
 import { Box, Container, FormControl } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import BoxWrapper from '../components/BoxWrapper'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { theme } from '../themes'
-import { AddCircle } from '@mui/icons-material';
 import KeinginanList from '../components/KeinginanList';
 import ModalAddKeinginan from '../components/ModalAddKeinginan';
+import { useDispatch, useSelector } from 'react-redux';
+import Auth from '../utils/Auth';
+import { fetchKeinginanList } from '../store/features/keinginan/keinginanSlice';
 
 const Keinginan = () => {  
-  const keinginanList = [
-    {
-      id: 1,
-      judul: 'Beli motor',
-      nominal: 1000000,
-      target: '2022-12-01',
-      celengan_per_hari: 20000
-    },
-    {
-      id: 2,
-      judul: 'Beli iPad',
-      nominal: 1000000,
-      target: '2023-03-11',
-      celengan_per_hari: 20000
-    },
-    {
-      id: 3,
-      judul: 'Beli PC',
-      nominal: 2000000,
-      target: '2023-02-08',
-      celengan_per_hari: 20000
-    },
-    {
-      id: 4,
-      judul: 'Naik haji',
-      nominal: 100000000,
-      target: '2024-12-01',
-      celengan_per_hari: 20000
-    },
-    {
-      id: 5,
-      judul: 'Tunangan',
-      nominal: 5000000,
-      target: '2023-08-22',
-      celengan_per_hari: 20000
-    },
-  ]
+  const dispatch = useDispatch()
+  const userId = Auth.getUserId()
+  const keinginanList = useSelector(state => state.keinginan.data)
+  
+  useEffect(() =>{
+    userId && dispatch(fetchKeinginanList(userId))
+  }, [dispatch, userId])
+  
   return (
     <Box
       sx={{
@@ -69,7 +42,7 @@ const Keinginan = () => {
             Keinginanku
           </Typography>
           <Typography>
-            Menampilkan 5 dari 12 keinginan
+            Menampilkan {keinginanList.length} dari 12 keinginan
           </Typography>
 
           <Box
