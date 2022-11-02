@@ -58,6 +58,14 @@ const APIKeinginan ={
     }catch(err){
       return err
     }
+  },
+  async keinginanDetail(data){
+    try{
+      const res = await axiosInstance.get(`user/${data.userId}/keinginan/${data.id}`)
+      return res
+    }catch(err){
+      return err
+    }
   }
 }
 

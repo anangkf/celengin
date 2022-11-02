@@ -1,5 +1,5 @@
 import { Box, IconButton, Typography } from '@mui/joy';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../themes';
 import { formatRp } from '../utils/formatRp';
@@ -12,11 +12,15 @@ import { formatDate } from '../utils/formatDate';
 const KeinginanListItem = ({data, manipulate}) => {
   const {id, judul, nominal, target, celengan_per_hari, created_at} = data;
   const loading = useSelector(state => state.keinginan.loading)
-  
   const navigate = useNavigate()
+  
+  const handleClick = () =>{
+    navigate(`/keinginan/${id}`) 
+  }
+
   return (
       <Box
-        onClick = {() => navigate(`/keinginan/${id}`)}
+        onClick = {handleClick}
         sx={{
           display: 'flex',
           justifyContent: 'space-between',

@@ -7,7 +7,8 @@ const initialState ={
   selesai: [],
   celengan: [],
   celengan_hari_ini: 0,
-  loading: false
+  loading: false,
+  currentDetail: {}
 }
 
 export const fetchKeinginanTerbaru = createAsyncThunk('fetch/keinginanTerbaru', async (userId) =>{
@@ -69,6 +70,15 @@ export const getCelenganList = createAsyncThunk('fetch/celengan', async(userId) 
   }
 })
 
+export const getKeinginanDetail = createAsyncThunk('get/keinginanDetail', async (data) =>{
+  try{
+    const res = await APIKeinginan.keinginanDetail(data);
+    return res.data.results[0]
+  }catch(err){
+    console.log(err.response)
+  }
+})
+
 export const KeinginanSlice = createSlice({
   name: 'keinginan',
   initialState,
@@ -117,6 +127,13 @@ export const KeinginanSlice = createSlice({
       })
       .addCase(getCelenganList.fulfilled, (state, action) =>{
         state.celengan = action.payload
+        state.loading = false
+      })
+      .addCase(getKeinginanDetail.pending, (state) =>{
+        state.loading = true
+      })
+      .addCase(getKeinginanDetail.fulfilled, (state, action) =>{
+        state.currentDetail = action.payload
         state.loading = false
       })
   }

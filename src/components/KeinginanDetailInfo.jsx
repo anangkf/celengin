@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, IconButton, Typography } from '@mui/joy'
 import { Box } from '@mui/system'
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -7,10 +7,38 @@ import { theme } from '../themes'
 import { formatRp } from '../utils/formatRp';
 import { BorderLinearProgress } from './BorderLinearProgress';
 import { AddCircle } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDateDiff } from '../utils/getDateDiff'
+import Auth from '../utils/Auth';
+import { getKeinginanDetail } from '../store/features/keinginan/keinginanSlice';
+import { useParams } from 'react-router-dom';
 
-const KeinginanDetailInfo = ({data}) => {
-  const {id, judul, nominal, target, celengan_per_hari} = data;
-  const progress = 5
+const KeinginanDetailInfo = () => {
+  const userId = Auth.getUserId()
+  const dispatch = useDispatch()
+  const detail = useSelector(state => state.keinginan.currentDetail)
+  const {id} = useParams()
+  
+  const {
+    user_id, judul, 
+    nominal, target, celengan, 
+    celengan_per_hari, celengan_per_bulan, 
+    prioritas, selesai, created_at
+  } = detail
+  
+  const progress = Number((celengan / nominal * 100).toFixed(2))
+  const {months} = getDateDiff(target)
+  const remainingMonths = Math.floor(months)
+  const remainingDays = Math.floor((months - remainingMonths) * 30)
+
+  let {months: pastMonths} = getDateDiff(created_at)
+  pastMonths = Math.abs(pastMonths)
+
+  useEffect(() =>{
+    userId && dispatch(getKeinginanDetail({userId, id}))
+  }, [dispatch, userId, id])
+
+  // console.log(detail);
   return (
     <Box>
       <Box
@@ -24,10 +52,10 @@ const KeinginanDetailInfo = ({data}) => {
           <Typography
             fontSize= {'xl3'}
           >
-            {data.judul}
+            {judul}
           </Typography>
           <Typography sx={{color: theme.vars.red, fontSize: 'lg'}}>
-            1 bulan 20 hari lagi
+            {remainingMonths} bulan {remainingDays} hari lagi
           </Typography>
         </Box>
         <Box sx={{display: 'flex', gap: 2, alignItems: 'start'}}>
@@ -63,8 +91,8 @@ const KeinginanDetailInfo = ({data}) => {
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'end', gap: 1}}>
           <Typography sx={{fontSize: 'lg'}}>{formatRp(nominal - celengan_per_hari)}</Typography>
-          <Typography sx={{fontSize: 'lg'}}>0.3/2 bulan</Typography>
-          <Typography sx={{fontSize: 'lg'}}>{formatRp(80000)}</Typography>
+          <Typography sx={{fontSize: 'lg'}}>{pastMonths}/{months} bulan</Typography>
+          <Typography sx={{fontSize: 'lg'}}>{formatRp(celengan_per_bulan)}</Typography>
           <Typography sx={{fontSize: 'lg'}}>{formatRp(celengan_per_hari)}</Typography>
         </Box>
       </Box>
