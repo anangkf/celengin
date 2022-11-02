@@ -4,11 +4,10 @@ import { theme } from '../themes'
 import { formatRp } from '../utils/formatRp';
 
 const QuickStarterItem = ( {data} ) => {
-  const {id, nama, nominal, target} = data;
-
+  const {id, nama, nominal, target_bulan} = data;
+  
   return (
     <Card 
-      key={id}
       variant={'solid'}
       sx={{
         backgroundColor: theme.vars.yellow,
@@ -27,10 +26,12 @@ const QuickStarterItem = ( {data} ) => {
         {formatRp(nominal)}
       </Typography>
       <Typography>
-        {`${target} bulan`}
+        {`${target_bulan} bulan`}
       </Typography>
       <Button
           // startDecorator={<AddCircle />}
+          id={id}
+          onClick={(e) => console.log(e.target.id)}
           sx={{
             backgroundColor: theme.vars.dark,
             width: '100px',

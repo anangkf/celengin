@@ -6,8 +6,12 @@ import Overview from '../components/Overview'
 import QuickAccess from '../components/QuickAccess'
 import QuickStarter from '../components/QuickStarter'
 import { theme } from '../themes'
+import Auth from '../utils/Auth'
 
 const Dashboard = () => {
+  const userId = Auth.getUserId()
+  const details = Auth.getUserDetails()
+  const userData = {userId, ...details}
   return (
     <Box
       sx={{
@@ -21,10 +25,10 @@ const Dashboard = () => {
           minHeight: '100vh',
         }}
       >
-        <Overview />
+        <Overview userData = {userData} />
         <QuickAccess />
         <QuickStarter />
-        <KeinginanTerbaru />
+        <KeinginanTerbaru userData = {userData} />
       </Container>
     </Box>
   )

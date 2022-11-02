@@ -1,11 +1,64 @@
 import { AddCircle, KeyboardArrowDown } from '@mui/icons-material'
 import { Box, Button, Input, Option, Select, selectClasses, Typography } from '@mui/joy'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addCelengan, fetchKeinginanList } from '../store/features/keinginan/keinginanSlice'
 import { theme } from '../themes'
 import BoxWrapper from './BoxWrapper'
+import Auth from '../utils/Auth'
+import Swal from 'sweetalert2'
 
 const QuickAccess = () => {
-  const celenganList = ['Beli motor', 'Buat nikah', 'Beli PC', 'Naik haji']
+  const userId = Auth.getUserId()
+  const dispatch = useDispatch()
+  const keinginanList = useSelector(state => state.keinginan.data)
+
+  const handleChange = (e) =>{
+    e.preventDefault()
+
+    const user_id = Auth.getUserId()
+    const formData = new FormData(e.target)
+    let selectedValue = formData.get('keinginan')
+    let input = Number(formData.get('input'))
+    selectedValue = selectedValue.split('_')
+
+    let [keinginan_id, celengan, nominal] = selectedValue
+    celengan = Number(celengan)
+    nominal = Number(nominal)
+    const amount = celengan + input
+    console.log({nominal, celengan, input, amount})
+    input < 0 
+      && Swal.fire({
+        icon: 'info',
+        title: 'Upss',
+        text: 'Ngga bisa nyelengin bilangan negatif',
+      })
+    if(amount < nominal && input > 0){
+      dispatch(addCelengan({keinginan_id, user_id, nominal: input, celengan: amount}))
+        .then(res =>{
+          if(res.payload.status){
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil',
+              text: 'Berhasil menambahkan celengan!',
+            })
+          }
+        })
+    }else if(amount === nominal){
+      alert('Post keinginan selesai')
+    }else if(amount > nominal){
+      Swal.fire({
+        icon: 'info',
+        title: 'Upss',
+        text: 'Nominal yang diinput melebihi target celengan nih',
+      })
+    }
+  }
+
+  useEffect(() => {
+    userId && dispatch(fetchKeinginanList(userId))
+  }, [dispatch, userId])
+  
   return (
     <BoxWrapper>
       <Typography
@@ -16,13 +69,14 @@ const QuickAccess = () => {
       >
         Akses cepat
       </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column'
-        }}
-      >
+        <form 
+          onSubmit={handleChange}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column'
+          }} 
+        >
         <Box
           sx={{
             width: '100%',
@@ -34,9 +88,10 @@ const QuickAccess = () => {
         >
           <Select
             placeholder="Pilih celengan…"
+            name="keinginan"
             indicator={<KeyboardArrowDown />}
             sx={{
-              width: '48%',
+              minWidth: '48%',
               [`& .${selectClasses.indicator}`]: {
                 transition: '0.2s',
                 [`&.${selectClasses.expanded}`]: {
@@ -45,16 +100,17 @@ const QuickAccess = () => {
               },
             }}
           >
-            {celenganList.map((item, idx) =>{
+            {keinginanList.map((item) =>{
               return(
-                <Option key={idx} value={item}>{item}</Option>
+                <Option key={item.id} value={`${item.id}_${item.celengan}_${item.nominal}`}>{item.judul}</Option>
               )
             })}
           </Select>
-          <Input type='number' sx={{width: '48%'}} placeholder="Masukkan nominal…" />
+          <Input type='number' name={'input'} sx={{minWidth: '48%'}} placeholder="Masukkan nominal…" />
         </Box>
         <Button 
           startDecorator={<AddCircle />}
+          type={'submit'}
           sx={{
             backgroundColor: theme.vars.dark,
             width: '120px',
@@ -66,7 +122,7 @@ const QuickAccess = () => {
         >
           celengin
         </Button>
-      </Box>
+        </form>
     </BoxWrapper>
   )
 }

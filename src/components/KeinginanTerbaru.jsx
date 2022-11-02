@@ -1,49 +1,23 @@
 import { Button, Typography } from '@mui/joy'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { theme } from '../themes'
 import BoxWrapper from './BoxWrapper'
 import KeinginanList from './KeinginanList'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchKeinginanTerbaru } from '../store/features/keinginan/keinginanSlice'
 
-const KeinginanTerbaru = () => {
-  const keinginanTerbaruList = [
-    {
-      id: 1,
-      judul: 'Beli motor',
-      nominal: 1000000,
-      target: 2,
-      celengan_per_hari: 20000
-    },
-    {
-      id: 2,
-      judul: 'Beli iPad',
-      nominal: 1000000,
-      target: 1,
-      celengan_per_hari: 20000
-    },
-    {
-      id: 3,
-      judul: 'Beli PC',
-      nominal: 2000000,
-      target: 3,
-      celengan_per_hari: 20000
-    },
-    {
-      id: 4,
-      judul: 'Naik haji',
-      nominal: 1000000,
-      target: 12,
-      celengan_per_hari: 20000
-    },
-    {
-      id: 5,
-      judul: 'Tunangan',
-      nominal: 5000000,
-      target: 4,
-      celengan_per_hari: 20000
-    },
-  ]
+const KeinginanTerbaru = ({userData}) => {
+  const {userId: userID } = userData
+  const dispatch = useDispatch()
+  const keinginanState = useSelector(state => state.keinginan)
+  const {terbaru, loading} = keinginanState;
+  
+  useEffect(() => {
+    dispatch(fetchKeinginanTerbaru(userID))
+  }, [dispatch])
+  
   return (
     <BoxWrapper>
       <Box
@@ -77,7 +51,14 @@ const KeinginanTerbaru = () => {
           <Link to='/keinginan'>Lihat semua</Link>
         </Button>
       </Box>
-      <KeinginanList data={keinginanTerbaruList} manipulate={false}/>
+      {terbaru.length === 0
+        ? <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4}}>
+            <Typography sx={{fontSize: 'lg'}}>
+              Belum ada keinginan yang dibuat. <Typography sx={{color: theme.vars.blue, cursor: 'pointer'}}>Buat sekarang</Typography>
+            </Typography>
+          </Box>
+        : <KeinginanList data={terbaru} manipulate={false}/>
+      }
     </BoxWrapper>
   )
 }
