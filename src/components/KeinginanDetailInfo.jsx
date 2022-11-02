@@ -7,6 +7,7 @@ import { theme } from '../themes'
 import { formatRp } from '../utils/formatRp';
 import { BorderLinearProgress } from './BorderLinearProgress';
 import { AddCircle } from '@mui/icons-material';
+import ModalAddCelengan from './ModalAddCelengan'
 import { useDispatch, useSelector } from 'react-redux';
 import { getDateDiff } from '../utils/getDateDiff'
 import Auth from '../utils/Auth';
@@ -17,6 +18,7 @@ const KeinginanDetailInfo = () => {
   const userId = Auth.getUserId()
   const dispatch = useDispatch()
   const detail = useSelector(state => state.keinginan.currentDetail)
+  const celenganState = useSelector(state => state.keinginan.celengan)
   const {id} = useParams()
   
   const {
@@ -36,7 +38,7 @@ const KeinginanDetailInfo = () => {
 
   useEffect(() =>{
     userId && dispatch(getKeinginanDetail({userId, id}))
-  }, [dispatch, userId, id])
+  }, [dispatch, userId, id, celenganState])
 
   // console.log(detail);
   return (
@@ -90,7 +92,7 @@ const KeinginanDetailInfo = () => {
           <Typography sx={{fontSize: 'lg'}}>Celengan perhari</Typography>
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'end', gap: 1}}>
-          <Typography sx={{fontSize: 'lg'}}>{formatRp(nominal - celengan_per_hari)}</Typography>
+          <Typography sx={{fontSize: 'lg'}}>{formatRp(nominal - celengan)}</Typography>
           <Typography sx={{fontSize: 'lg'}}>{pastMonths}/{months} bulan</Typography>
           <Typography sx={{fontSize: 'lg'}}>{formatRp(celengan_per_bulan)}</Typography>
           <Typography sx={{fontSize: 'lg'}}>{formatRp(celengan_per_hari)}</Typography>
@@ -106,7 +108,7 @@ const KeinginanDetailInfo = () => {
       </Box>
       
       <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', my: 3}}>
-        <Button
+        {/* <Button
           startDecorator={<AddCircle />}
           sx={{
             backgroundColor: theme.vars.dark,
@@ -118,7 +120,8 @@ const KeinginanDetailInfo = () => {
           }}
         >
           celengin
-        </Button>
+        </Button> */}
+        <ModalAddCelengan text={'celengin'} data={detail}/>
       </Box>
     </Box>
   )

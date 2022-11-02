@@ -136,7 +136,14 @@ export const KeinginanSlice = createSlice({
         state.currentDetail = action.payload
         state.loading = false
       })
+  },
+  reducers:{
+    setKeinginanDetail: (state, action) =>{
+      state.currentDetail = action.payload
+    }
   }
 })
+
+export const {setKeinginanDetail} = KeinginanSlice.actions
 
 export default KeinginanSlice.reducer
