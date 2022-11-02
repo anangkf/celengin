@@ -22,21 +22,21 @@ const ModalAddCelengan = ({text, data}) =>{
   const handleSubmit = (e) =>{
     e.preventDefault()
     const user_id = Auth.getUserId()
-    const {id: keinginan_id, celengan } = data
+    const {id: keinginan_id, celengan, nominal } = data
     
     const formData = new FormData(e.target)
-    const nominal = Number(formData.get('nominal'))
+    const input = Number(formData.get('nominal'))
     
-    const amount = celengan + nominal
-    // console.log({keinginan_id, user_id, nominal, celengan: amount})
-    nominal < 0 
+    const amount = celengan + input
+    // console.log({keinginan_id, user_id, nominal: input, celengan: amount})
+    input < 0 
       && Swal.fire({
         icon: 'info',
         title: 'Upss',
         text: 'Ngga bisa nyelengin bilangan negatif',
       })
-    if(nominal < celengan && nominal > 0){
-      dispatch(addCelengan({keinginan_id, user_id, nominal, celengan: amount}))
+    if(input < nominal && input > 0){
+      dispatch(addCelengan({keinginan_id, user_id, nominal: input, celengan: amount}))
         .then(res =>{
           if(res.payload.status){
             Swal.fire({
@@ -46,9 +46,9 @@ const ModalAddCelengan = ({text, data}) =>{
             })
           }
         })
-    }else if(amount === celengan){
+    }else if(amount === nominal){
       alert('Post keinginan selesai')
-    }else if(amount > celengan){
+    }else if(amount > nominal){
       Swal.fire({
         icon: 'info',
         title: 'Upss',
@@ -95,7 +95,7 @@ const ModalAddCelengan = ({text, data}) =>{
             onSubmit={handleSubmit}
           >
             <Stack spacing={2}>
-              <TextField type='number' label="nominal" name="nominal" autoFocus required />
+              <TextField type='number' autoFocus label="nominal" name="nominal" required />
               
               <Button 
                 type="submit"

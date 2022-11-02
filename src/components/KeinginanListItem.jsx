@@ -24,7 +24,8 @@ const KeinginanListItem = ({data, manipulate}) => {
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
-          backgroundColor: theme.vars.softGray,
+          backgroundColor: theme.vars.light,
+          border: `2px solid ${theme.vars.softGray}`,
           borderRadius: '12px',
           height: '100px',
           cursor: 'pointer',
