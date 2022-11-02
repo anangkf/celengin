@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import APIKeinginan from "../../../apis/keinginan.api";
 
 const initialState ={
@@ -52,7 +52,7 @@ export const addCelengan = createAsyncThunk('add/celengan', async(data) =>{
     
     const add = res.data.results.returning[0] 
     const patched =  patch.data.results
-    const returned = {add, patched}
+    const returned = {add, patched, status}
 
     return returned
   }catch(err){
@@ -78,6 +78,7 @@ export const KeinginanSlice = createSlice({
       .addCase(fetchKeinginanList.fulfilled, (state, action) =>{
         state.data = action.payload
         state.selesai = action.payload.filter(x => x.selesai === true)
+        state.loading = false
       })
       .addCase(createKeinginan.pending, (state) =>{
         state.loading = true
@@ -100,6 +101,7 @@ export const KeinginanSlice = createSlice({
           }
           return item
         })
+        state.loading = false
       })
   }
 })
