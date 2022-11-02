@@ -22,6 +22,7 @@ import Auth from '../utils/Auth';
 import { getCelenganPreset } from '../utils/getCelenganPreset';
 import { useDispatch } from 'react-redux';
 import { createKeinginan } from '../store/features/keinginan/keinginanSlice';
+import Swal from 'sweetalert2';
 
 const ModalAddKeinginan = ({text}) =>{
   const [open, setOpen] = useState(false);
@@ -44,6 +45,14 @@ const ModalAddKeinginan = ({text}) =>{
     const preset = getCelenganPreset(nominal, days, months)
     
     dispatch(createKeinginan({user_id, judul, nominal, target, ...preset, prioritas}))
+      .then(res =>{
+        res.payload.status 
+          && Swal.fire({
+              icon: 'success',
+              title: 'Berhasil',
+              text: 'Berhasil menambahkan keinginan!',
+            })
+      })
     setOpen(false);
   }
 

@@ -7,8 +7,8 @@
  */
 export const getCelenganPreset = (nominal, daysDiff, monthsDiff) =>{
   
-  const celengan_per_hari = Math.ceil(nominal /daysDiff)
-  const celengan_per_bulan = Math.ceil(nominal /monthsDiff)
+  const celengan_per_hari = daysDiff > 1 ? Math.ceil(nominal /daysDiff) : nominal
+  const celengan_per_bulan = monthsDiff > 1 ? Math.ceil(nominal /monthsDiff) : nominal
 
   return {celengan_per_hari, celengan_per_bulan}
 }
