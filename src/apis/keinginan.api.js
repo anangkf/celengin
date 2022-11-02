@@ -24,6 +24,32 @@ const APIKeinginan ={
     }catch(err){
       return err
     }
+  },
+  async addCelengan(data){
+    // should descturctrure because there is property celengan in the data that is not needed yet
+    // but required in the next request(celengin)
+    const {keinginan_id, user_id, nominal} = data
+    try{
+      const res = await axiosInstance.post('/celengan',
+        {
+          keinginan_id,
+          user_id,
+          nominal
+        }
+      )
+      return res
+    }catch(err){
+      return err
+    }
+  }, 
+  async celengin(data){
+    const id = data.keinginan_id
+    try{
+      const res = await axiosInstance.patch(`keinginan/${id}`, {celengan: data.celengan})
+      return res
+    }catch(err){
+      return err
+    }
   }
 }
 

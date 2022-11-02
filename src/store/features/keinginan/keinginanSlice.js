@@ -1,10 +1,12 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import APIKeinginan from "../../../apis/keinginan.api";
 
 const initialState ={
   terbaru: [],
   data: [],
   selesai: [],
+  celengan: [],
+  celengan_hari_ini: 0,
   loading: false
 }
 
@@ -29,9 +31,32 @@ export const fetchKeinginanList = createAsyncThunk('fetch/keinginanList', async(
 export const createKeinginan = createAsyncThunk('create/keinginan', async(data) =>{
   try{
     const res = await APIKeinginan.createKeinginan(data);
-    return res.data.results.returning[0]
+
+    const results =  res.data.results.returning[0]
+    const status = res.status === 200
+    return {results, status}
   }catch(err){
     console.log(err.response)
+  }
+})
+// a function that run 2 request at once(add celengan to table celengan and patch celengan at table keinginan)
+/**
+ * @params data: object consist of keinginan_id, user_id, nominal, celengan
+ * keinginan_id, user_id, nominal: amount of celengan to be added , celengan: amount of current celengan + nominal 
+ */
+export const addCelengan = createAsyncThunk('add/celengan', async(data) =>{
+  try{
+    const res = await APIKeinginan.addCelengan(data);
+    const status = res.status === 200
+    const patch =  status && await APIKeinginan.celengin(data); 
+    
+    const add = res.data.results.returning[0] 
+    const patched =  patch.data.results
+    const returned = {add, patched}
+
+    return returned
+  }catch(err){
+    console.log(err)
   }
 })
 
@@ -58,9 +83,23 @@ export const KeinginanSlice = createSlice({
         state.loading = true
       })
       .addCase(createKeinginan.fulfilled, (state, action) =>{
-        state.data.unshift(action.payload)
-        state.terbaru.unshift(action.payload)
+        state.data.unshift(action.payload.results)
+        state.terbaru.unshift(action.payload.results)
         state.loading = false
+      })
+      .addCase(addCelengan.pending, (state) =>{
+        state.loading = true
+      })
+      .addCase(addCelengan.fulfilled, (state, action) =>{
+        const {add, patched} = action.payload
+        state.celengan.unshift(add)
+        state.data.map(item =>{
+          if(item.id === patched.id){
+            item.celengan = patched.celengan
+            return item
+          }
+          return item
+        })
       })
   }
 })
