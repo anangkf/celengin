@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from '@mui/joy';
+import { Box, Chip, IconButton, Typography } from '@mui/joy';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../themes';
@@ -11,7 +11,7 @@ import { handleDeleteKeinginan } from '../utils/handleDeleteKeinginan';
 import ModalEditKeinginan from './ModalEditKeinginan';
 
 const KeinginanListItem = ({data, manipulate}) => {
-  const {id, judul, nominal, target, celengan_per_hari} = data;
+  const {id, judul, nominal, target, celengan_per_hari, prioritas, selesai} = data;
   const loading = useSelector(state => state.keinginan.loading)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -52,14 +52,28 @@ const KeinginanListItem = ({data, manipulate}) => {
         }}
       >
         <Box>
-          <Typography
-            sx={{
-              fontWeight: 600,
-              mb: 1
-            }}
-          >
-            {loading ? <Skeleton width={'180px'} /> : judul}
-          </Typography>
+          <Box sx={{display: 'flex', gap: 2, alignItems: 'baseline',}}>
+            <Typography
+              sx={{
+                fontWeight: 600,
+                mb: 1
+              }}
+            >
+              {loading ? <Skeleton width={'180px'} /> : judul}
+            </Typography>
+            {!loading && <Chip 
+              variant={'soft'}
+              color={selesai ? 'success' : 'warning'}
+            >
+              {selesai ? 'Selesai' : 'Berjalan'}
+            </Chip>}
+            {!loading && <Chip 
+              variant={'soft'}
+              color={prioritas === 1 ? 'danger' : prioritas === 2 ? 'primary' : 'neutral' }
+            >
+              Priority {prioritas === 1 ? 'High' : prioritas === 2 ? 'Medium' : 'Low' }
+            </Chip>}
+          </Box>
           <Typography>{loading ? <Skeleton width={'120px'} /> : formatDate(target)}</Typography>
         </Box>
         <Box sx={{

@@ -36,7 +36,7 @@ const ModalEditKeinginan = ({data}) =>{
     celengan_per_hari: data.celengan_per_hari,
     celengan_per_bulan: data.celengan_per_bulan,
   })
-  console.log(data)
+
   const { judul, nominal, target, prioritas} = formData
   const [open, setOpen] = useState(false);
 
@@ -71,6 +71,7 @@ const ModalEditKeinginan = ({data}) =>{
     const {days, months} = getDateDiff(target);
     const {celengan_per_bulan: cpb, celengan_per_hari: cph} = getCelenganPreset(nominal, days, months)
     const formattedTarget = moment(target).format('YYYY-MM-DD')
+    
     dispatch(updateKeinginan(
       {...formData, target: formattedTarget, celengan_per_hari: cph, celengan_per_bulan: cpb}
     ))

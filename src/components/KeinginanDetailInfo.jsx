@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { IconButton, Typography } from '@mui/joy'
+import { Chip, IconButton, Typography } from '@mui/joy'
 import { Box } from '@mui/system'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { theme } from '../themes'
@@ -26,7 +26,7 @@ const KeinginanDetailInfo = () => {
     judul, 
     nominal, target, celengan, 
     celengan_per_hari, celengan_per_bulan, 
-    created_at
+    selesai, prioritas, created_at
   } = detail
   
   const progress = Number((celengan / nominal * 100).toFixed(2))
@@ -51,11 +51,25 @@ const KeinginanDetailInfo = () => {
         }}
       >
         <Box>
-          <Typography
-            fontSize= {'xl3'}
-          >
-            {judul}
-          </Typography>
+          <Box sx={{display: 'flex', gap: 2, alignItems: 'center'}}>
+            <Typography
+              fontSize= {'xl3'}
+              >
+              {judul}
+            </Typography>
+            <Chip 
+              variant={'soft'}
+              color={selesai ? 'success' : 'warning'}
+            >
+              {selesai ? 'Selesai' : 'Berjalan'}
+            </Chip>
+            <Chip 
+              variant={'soft'}
+              color={prioritas === 1 ? 'danger' : prioritas === 2 ? 'primary' : 'neutral' }
+            >
+              Priority {prioritas === 1 ? 'High' : prioritas === 2 ? 'Medium' : 'Low' }
+            </Chip>
+          </Box>
           <Typography sx={{color: theme.vars.red, fontSize: 'lg'}}>
             {remainingMonths} bulan {remainingDays} hari lagi
           </Typography>
