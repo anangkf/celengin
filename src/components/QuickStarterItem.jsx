@@ -6,9 +6,9 @@ import { formatRp } from '../utils/formatRp';
 import ModalEditKeinginan from './ModalEditKeinginan';
 
 const QuickStarterItem = ( {data} ) => {
-  const {nama, nominal, target_bulan} = data;
-  const passedData = {...data, judul: data.judul, target: moment().add(target_bulan, 'M'), prioritas: 3}
-
+  const {judul, nominal, target_bulan} = data;
+  const passedData = {...data, target: moment().add(target_bulan, 'M'), prioritas: 3}
+  
   return (
     <Card 
       variant={'solid'}
@@ -23,7 +23,7 @@ const QuickStarterItem = ( {data} ) => {
       }}
     >
       <Typography fontWeight={600} sx={{mb: 1}}>
-        {nama}
+        {judul}
       </Typography>
       <Typography>
         {formatRp(nominal)}
