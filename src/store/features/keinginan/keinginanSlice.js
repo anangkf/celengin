@@ -3,7 +3,7 @@ import APIKeinginan from "../../../apis/keinginan.api";
 
 const initialState ={
   terbaru: [],
-  data: [],
+  data: [],//keinginan
   selesai: [],
   celengan: [],
   celengan_hari_ini: 0,
@@ -79,6 +79,26 @@ export const getKeinginanDetail = createAsyncThunk('get/keinginanDetail', async 
   }
 })
 
+export const deleteKeinginanWithItsCelengan = createAsyncThunk('delete/keinginanWithItsCelengan', async (id) =>{
+  try{
+    const res = await APIKeinginan.deleteKeinginanWithItsCelengan(id);
+    const deletedCelengan = res.data.celengan.returning
+    const keinginan = res.data.keinginan.returning[0]
+    return {deletedCelengan, keinginan}
+  }catch(err){
+    console.log(err.response)
+  }
+})
+
+export const deleteKeinginan = createAsyncThunk('deleteKeinginan', async (id) =>{
+  try{
+    const res = await APIKeinginan.deleteKeinginan(id)
+    return res.data.keinginan.returning[0]
+  }catch(err){
+    console.log(err.response)
+  }
+})
+
 export const KeinginanSlice = createSlice({
   name: 'keinginan',
   initialState,
@@ -134,6 +154,39 @@ export const KeinginanSlice = createSlice({
       })
       .addCase(getKeinginanDetail.fulfilled, (state, action) =>{
         state.currentDetail = action.payload
+        state.loading = false
+      })
+      .addCase(deleteKeinginanWithItsCelengan.pending, (state) =>{
+        state.loading = true
+      })
+      .addCase(deleteKeinginanWithItsCelengan.fulfilled, (state, action) =>{
+        const {deletedCelengan, keinginan} = action.payload
+        state.keinginan.map(val => val.id !== keinginan.id)
+        // filter celengan list
+        // const newState = state.celengan.filter(val =>{
+        //   return deletedCelengan.filter(item =>{
+        //     return item.id === val.id
+        //   }).length === 0
+        // })
+        // state.celengan = newState
+        // deletedCelengan.map(item =>{
+        //   state.celengan.filter(val => val.id !== item.d)
+        //   return state.celengan
+        // })
+        // filter celengan hari ini
+        // celengan.map(item =>{
+          //   state.celengan_hari_ini.filter(val => val.id !== item.d)
+          //   return state.celengan_hari_ini
+          // })
+        state.loading = false
+      })
+      .addCase(deleteKeinginan.pending, (state) =>{
+        state.loading = true
+      })
+      .addCase(deleteKeinginan.fulfilled, (state, action) =>{
+        const {id} = action.payload
+        state.data = state.data.filter(val => val.id !== id)
+        state.terbaru = state.terbaru.filter(val => val.id !== id)
         state.loading = false
       })
   },

@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react'
-import { Button, IconButton, Typography } from '@mui/joy'
+import { IconButton, Typography } from '@mui/joy'
 import { Box } from '@mui/system'
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { theme } from '../themes'
 import { formatRp } from '../utils/formatRp';
 import { BorderLinearProgress } from './BorderLinearProgress';
-import { AddCircle } from '@mui/icons-material';
 import ModalAddCelengan from './ModalAddCelengan'
 import { useDispatch, useSelector } from 'react-redux';
 import { getDateDiff } from '../utils/getDateDiff'
 import Auth from '../utils/Auth';
 import { getKeinginanDetail } from '../store/features/keinginan/keinginanSlice';
-import { useParams } from 'react-router-dom';
+import { handleDeleteKeinginan } from '../utils/handleDeleteKeinginan';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const KeinginanDetailInfo = () => {
   const userId = Auth.getUserId()
@@ -20,6 +20,7 @@ const KeinginanDetailInfo = () => {
   const detail = useSelector(state => state.keinginan.currentDetail)
   const celenganState = useSelector(state => state.keinginan.celengan)
   const {id} = useParams()
+  const navigate = useNavigate()
   
   const {
     user_id, judul, 
@@ -69,6 +70,7 @@ const KeinginanDetailInfo = () => {
             <EditRoundedIcon />
           </IconButton>
           <IconButton 
+            onClick={() =>handleDeleteKeinginan(id, detail, dispatch, navigate)}
             size={'sm'} 
             variant='plain'
             sx={{color: theme.vars.red, '&:hover': {backgroundColor: 'rgba(242, 66, 54, 0.3)'}}}
@@ -108,19 +110,6 @@ const KeinginanDetailInfo = () => {
       </Box>
       
       <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', my: 3}}>
-        {/* <Button
-          startDecorator={<AddCircle />}
-          sx={{
-            backgroundColor: theme.vars.dark,
-            width: '120px',
-            '&:hover':{
-              backgroundColor: theme.vars.dark,
-              opacity: 0.9
-            }
-          }}
-        >
-          celengin
-        </Button> */}
         <ModalAddCelengan text={'celengin'} data={detail}/>
       </Box>
     </Box>

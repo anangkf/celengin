@@ -6,16 +6,21 @@ import { formatRp } from '../utils/formatRp';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { Skeleton } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { formatDate } from '../utils/formatDate';
+import { handleDeleteKeinginan } from '../utils/handleDeleteKeinginan';
 
 const KeinginanListItem = ({data, manipulate}) => {
-  const {id, judul, nominal, target, celengan_per_hari, created_at} = data;
+  const {id, judul, nominal, target, celengan_per_hari} = data;
   const loading = useSelector(state => state.keinginan.loading)
   const navigate = useNavigate()
-  
-  const handleClick = () =>{
-    navigate(`/keinginan/${id}`) 
+  const dispatch = useDispatch()
+
+  const handleClick = (e) =>{
+    const name = e.target.localName
+    if(!(name === 'button' || name === 'path' || name === 'svg')){
+      navigate(`/keinginan/${id}`) 
+    }
   }
 
   return (
@@ -79,6 +84,7 @@ const KeinginanListItem = ({data, manipulate}) => {
                 : <IconButton 
                     size={'sm'} 
                     variant='plain'
+                    onClick={() => handleDeleteKeinginan(id, data, dispatch)}
                     sx={{color: theme.vars.red, '&:hover': {backgroundColor: 'rgba(242, 66, 54, 0.3)'}}}
                   >
                     <DeleteRoundedIcon />

@@ -11,7 +11,7 @@ const APIKeinginan ={
   },
   async getKeinginanList(userId){
     try{
-      const res = await axiosInstance.get(`keinginan/user/${userId}`)
+      const res = await axiosInstance.get(`/keinginan/user/${userId}`)
       return res
     }catch(err){
       return err
@@ -45,7 +45,7 @@ const APIKeinginan ={
   async celengin(data){
     const id = data.keinginan_id
     try{
-      const res = await axiosInstance.patch(`keinginan/${id}`, {celengan: data.celengan})
+      const res = await axiosInstance.patch(`/keinginan/${id}`, {celengan: data.celengan})
       return res
     }catch(err){
       return err
@@ -61,7 +61,26 @@ const APIKeinginan ={
   },
   async keinginanDetail(data){
     try{
-      const res = await axiosInstance.get(`user/${data.userId}/keinginan/${data.id}`)
+      const res = await axiosInstance.get(`/user/${data.userId}/keinginan/${data.id}`)
+      return res
+    }catch(err){
+      return err
+    }
+  },
+  // this function delete keinginan and its celengan lists at once
+  async deleteKeinginanWithItsCelengan(keinginanId){
+    try{
+      const res = await axiosInstance.delete(`/celengan/keinginan/${keinginanId}`)
+      return res
+    }catch(err){
+      return err
+    }
+  },
+  // delete keinginan which has no celengan in list
+  // it doesnt work for keinginan with celengan list inside
+  async deleteKeinginan(keinginanId){
+    try{
+      const res = await axiosInstance.delete(`/keinginan/${keinginanId}`)
       return res
     }catch(err){
       return err
