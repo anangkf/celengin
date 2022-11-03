@@ -48,7 +48,11 @@ const KeinginanListItem = ({data, manipulate}) => {
           height: '100px',
           cursor: 'pointer',
           my: 1,
-          p: 2
+          p: 2,
+          transition: '1s',
+          '&:hover':{
+            transform: 'scale(1.015)'
+          }
         }}
       >
         <Box>

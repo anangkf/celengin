@@ -22,11 +22,13 @@ import moment from 'moment/moment';
 import { getDateDiff } from '../utils/getDateDiff';
 import { getCelenganPreset } from '../utils/getCelenganPreset';
 import { useDispatch } from 'react-redux';
-import { updateKeinginan } from '../store/features/keinginan/keinginanSlice';
+import { createKeinginan, updateKeinginan } from '../store/features/keinginan/keinginanSlice';
 import Swal from 'sweetalert2';
+import Auth from '../utils/Auth';
 
 
-const ModalEditKeinginan = ({data}) =>{
+const ModalEditKeinginan = ({data, template}) =>{
+  const userId = Auth.getUserId()
   const [formData, setFormData] = useState({
     id: data.id,
     judul: data.judul,
@@ -36,7 +38,7 @@ const ModalEditKeinginan = ({data}) =>{
     celengan_per_hari: data.celengan_per_hari,
     celengan_per_bulan: data.celengan_per_bulan,
   })
-
+  
   const { judul, nominal, target, prioritas} = formData
   const [open, setOpen] = useState(false);
 
@@ -64,7 +66,7 @@ const ModalEditKeinginan = ({data}) =>{
       })
     }
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const { nominal, target} = formData
@@ -72,7 +74,7 @@ const ModalEditKeinginan = ({data}) =>{
     const {celengan_per_bulan: cpb, celengan_per_hari: cph} = getCelenganPreset(nominal, days, months)
     const formattedTarget = moment(target).format('YYYY-MM-DD')
     
-    dispatch(updateKeinginan(
+    !template && dispatch(updateKeinginan(
       {...formData, target: formattedTarget, celengan_per_hari: cph, celengan_per_bulan: cpb}
     ))
       .then(res =>{
@@ -83,19 +85,51 @@ const ModalEditKeinginan = ({data}) =>{
               text: 'Berhasil edit keinginan!',
             })
       })
+    
+    const duplicateFormData = {...formData}
+    delete duplicateFormData.id
+    template && dispatch(createKeinginan(
+      {...duplicateFormData, user_id: userId, target: formattedTarget, celengan_per_hari: cph, celengan_per_bulan: cpb}
+    ))
+      .then(res =>{
+        res.type === "create/keinginan/fulfilled"
+          && Swal.fire({
+              icon: 'success',
+              title: 'Berhasil',
+              text: 'Berhasil menambahkan keinginan!',
+            })
+      })
+
     setOpen(false);
   }
 
   return (
     <>
-      <IconButton 
-        onClick={handleClick}
-        size={'sm'} 
-        variant='plain'
-        sx={{color: theme.vars.blue}}
-      >
-        <EditRoundedIcon />
-      </IconButton>
+      {!template
+        ? <IconButton 
+          onClick={handleClick}
+          size={'sm'} 
+          variant='plain'
+          sx={{color: theme.vars.blue}}
+        >
+          <EditRoundedIcon />
+        </IconButton>
+      : <Button
+          onClick={handleClick}
+          sx={{
+            backgroundColor: theme.vars.dark,
+            width: '100px',
+            alignSelf: 'end',
+            mt: 1,
+            '&:hover':{
+              backgroundColor: theme.vars.dark,
+              opacity: 0.9
+            }
+          }}
+        >
+          Pick
+        </Button>
+      }
       <Modal sx={{zIndex: 50}} open={open} onClose={() => setOpen(false)}>
         <ModalDialog
           aria-labelledby="basic-modal-dialog-title"
@@ -114,7 +148,7 @@ const ModalEditKeinginan = ({data}) =>{
             fontSize="1.25em"
             mb="0.25em"
           >
-            Edit keinginan
+            {template ? 'Buat dari template' : 'Edit keinginan'}
           </Typography>
           <form
             onSubmit={handleSubmit}

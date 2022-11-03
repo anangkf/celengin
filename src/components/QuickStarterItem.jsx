@@ -1,11 +1,14 @@
-import { Button, Card, Typography } from '@mui/joy'
+import { Card, Typography } from '@mui/joy'
+import moment from 'moment/moment';
 import React from 'react'
 import { theme } from '../themes'
 import { formatRp } from '../utils/formatRp';
+import ModalEditKeinginan from './ModalEditKeinginan';
 
 const QuickStarterItem = ( {data} ) => {
-  const {id, nama, nominal, target_bulan} = data;
-  
+  const {nama, nominal, target_bulan} = data;
+  const passedData = {...data, judul: data.judul, target: moment().add(target_bulan, 'M'), prioritas: 3}
+
   return (
     <Card 
       variant={'solid'}
@@ -28,23 +31,7 @@ const QuickStarterItem = ( {data} ) => {
       <Typography>
         {`${target_bulan} bulan`}
       </Typography>
-      <Button
-          // startDecorator={<AddCircle />}
-          id={id}
-          onClick={(e) => console.log(e.target.id)}
-          sx={{
-            backgroundColor: theme.vars.dark,
-            width: '100px',
-            alignSelf: 'end',
-            mt: 1,
-            '&:hover':{
-              backgroundColor: theme.vars.dark,
-              opacity: 0.9
-            }
-          }}
-        >
-          Pick
-        </Button>
+      <ModalEditKeinginan data={passedData} template={true}/>
     </Card>
   )
 }
