@@ -99,6 +99,15 @@ export const deleteKeinginan = createAsyncThunk('deleteKeinginan', async (id) =>
   }
 })
 
+export const updateKeinginan = createAsyncThunk('update/keinginan', async(data) =>{
+  try{
+    const res = await APIKeinginan.updateKeinginan(data)
+    return res.data.results
+  }catch(err){
+    console.log(err.response)
+  }
+})
+
 export const KeinginanSlice = createSlice({
   name: 'keinginan',
   initialState,
@@ -187,6 +196,25 @@ export const KeinginanSlice = createSlice({
         const {id} = action.payload
         state.data = state.data.filter(val => val.id !== id)
         state.terbaru = state.terbaru.filter(val => val.id !== id)
+        state.loading = false
+      })
+      .addCase(updateKeinginan.pending, (state) =>{
+        state.loading = true
+      })
+      .addCase(updateKeinginan.fulfilled, (state, action) =>{
+        state.data = state.data.map(val =>{
+          if(val.id === action.payload.id){
+            return action.payload
+          }
+          return val
+        })
+        state.terbaru = state.terbaru.map(val =>{
+          if(val.id === action.payload.id){
+            return action.payload
+          }
+          return val
+        })
+        state.currentDetail = action.payload
         state.loading = false
       })
   },

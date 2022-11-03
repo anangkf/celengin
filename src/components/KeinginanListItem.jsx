@@ -3,12 +3,12 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../themes';
 import { formatRp } from '../utils/formatRp';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { Skeleton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDate } from '../utils/formatDate';
 import { handleDeleteKeinginan } from '../utils/handleDeleteKeinginan';
+import ModalEditKeinginan from './ModalEditKeinginan';
 
 const KeinginanListItem = ({data, manipulate}) => {
   const {id, judul, nominal, target, celengan_per_hari} = data;
@@ -18,7 +18,20 @@ const KeinginanListItem = ({data, manipulate}) => {
 
   const handleClick = (e) =>{
     const name = e.target.localName
-    if(!(name === 'button' || name === 'path' || name === 'svg')){
+
+    if(
+      !(name === 'button' || 
+        name === 'path' || 
+        name === 'svg' || 
+        name === 'input' || 
+        name === 'li' || 
+        name === 'h2' ||
+        name === 'label' ||
+        name === 'span' ||
+        e.target.parentElement.localName === 'form' ||
+        e.target.className.includes('Modal')
+        )
+      ){
       navigate(`/keinginan/${id}`) 
     }
   }
@@ -71,13 +84,7 @@ const KeinginanListItem = ({data, manipulate}) => {
             <Box sx={{display: 'flex', flexDirection: 'column',justifyContent: 'space-between'}}>
               {loading
                 ? <Skeleton variant="rectangular" width={28} height={28}/>
-                : <IconButton 
-                    size={'sm'} 
-                    variant='plain'
-                    sx={{color: theme.vars.blue}}
-                  >
-                    <EditRoundedIcon />
-                  </IconButton>
+                : <ModalEditKeinginan data={data}/>
               }
               {loading
                 ? <Skeleton variant="rectangular" width={28} height={28}/>

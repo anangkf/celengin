@@ -85,6 +85,16 @@ const APIKeinginan ={
     }catch(err){
       return err
     }
+  },
+  async updateKeinginan(data){
+    const id = data.id
+    delete data.id
+    try{
+      const res = await axiosInstance.patch(`keinginan/edit/${id}`,data)
+      return res
+    }catch(err){
+      return err
+    }
   }
 }
 

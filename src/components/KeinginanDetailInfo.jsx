@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { IconButton, Typography } from '@mui/joy'
 import { Box } from '@mui/system'
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { theme } from '../themes'
 import { formatRp } from '../utils/formatRp';
@@ -13,6 +12,7 @@ import Auth from '../utils/Auth';
 import { getKeinginanDetail } from '../store/features/keinginan/keinginanSlice';
 import { handleDeleteKeinginan } from '../utils/handleDeleteKeinginan';
 import { useNavigate, useParams } from 'react-router-dom';
+import ModalEditKeinginan from './ModalEditKeinginan';
 
 const KeinginanDetailInfo = () => {
   const userId = Auth.getUserId()
@@ -23,10 +23,10 @@ const KeinginanDetailInfo = () => {
   const navigate = useNavigate()
   
   const {
-    user_id, judul, 
+    judul, 
     nominal, target, celengan, 
     celengan_per_hari, celengan_per_bulan, 
-    prioritas, selesai, created_at
+    created_at
   } = detail
   
   const progress = Number((celengan / nominal * 100).toFixed(2))
@@ -41,7 +41,6 @@ const KeinginanDetailInfo = () => {
     userId && dispatch(getKeinginanDetail({userId, id}))
   }, [dispatch, userId, id, celenganState])
 
-  // console.log(detail);
   return (
     <Box>
       <Box
@@ -62,13 +61,7 @@ const KeinginanDetailInfo = () => {
           </Typography>
         </Box>
         <Box sx={{display: 'flex', gap: 2, alignItems: 'start'}}>
-          <IconButton
-            size={'sm'} 
-            variant='plain'
-            sx={{color: theme.vars.blue}}
-          >
-            <EditRoundedIcon />
-          </IconButton>
+          <ModalEditKeinginan data={detail} />
           <IconButton 
             onClick={() =>handleDeleteKeinginan(id, detail, dispatch, navigate)}
             size={'sm'} 
