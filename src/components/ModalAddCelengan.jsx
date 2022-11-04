@@ -11,7 +11,7 @@ import { theme } from '../themes';
 import { AddCircle } from '@mui/icons-material';
 import Auth from '../utils/Auth';
 import { useDispatch } from 'react-redux';
-import { addCelengan } from '../store/features/keinginan/keinginanSlice';
+import { achieveKeinginan, addCelengan } from '../store/features/keinginan/keinginanSlice';
 import Swal from 'sweetalert2';
 
 const ModalAddCelengan = ({text, data}) =>{
@@ -28,33 +28,33 @@ const ModalAddCelengan = ({text, data}) =>{
     const input = Number(formData.get('nominal'))
     
     const amount = celengan + input
-    // console.log({keinginan_id, user_id, nominal: input, celengan: amount})
+    const selesai = Boolean(amount === nominal)
+
     input < 0 
       && Swal.fire({
         icon: 'info',
         title: 'Upss',
         text: 'Ngga bisa nyelengin bilangan negatif',
       })
-    if(input < nominal && input > 0){
-      dispatch(addCelengan({keinginan_id, user_id, nominal: input, celengan: amount}))
-        .then(res =>{
-          if(res.payload.status){
-            Swal.fire({
-              icon: 'success',
-              title: 'Berhasil',
-              text: 'Berhasil menambahkan celengan!',
-            })
-          }
+      if(amount <= nominal && input > 0){
+        selesai && dispatch(achieveKeinginan())
+        dispatch(addCelengan({keinginan_id, user_id, nominal: input, celengan: amount, selesai}))
+          .then(res =>{
+            if(res.payload.status){
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Berhasil menambahkan celengan!',
+              })
+            }
+          })
+      }else{
+        Swal.fire({
+          icon: 'info',
+          title: 'Upss',
+          text: 'Nominal yang diinput melebihi target celengan nih',
         })
-    }else if(amount === nominal){
-      alert('Post keinginan selesai')
-    }else if(amount > nominal){
-      Swal.fire({
-        icon: 'info',
-        title: 'Upss',
-        text: 'Nominal yang diinput melebihi target celengan nih',
-      })
-    }
+      }
     setOpen(false)
   }
 

@@ -4,7 +4,7 @@ import { theme } from "../themes";
 
 export const handleDeleteKeinginan = (id, data, dispatch, navigate) =>{
 
-  const{judul, celengans} = data
+  const { judul, celengans } = data
   Swal.fire({
     title: 'Apakah kamu yakin?',
     text: `Yakin mau menghapus ${judul}`,
@@ -19,14 +19,13 @@ export const handleDeleteKeinginan = (id, data, dispatch, navigate) =>{
       if(celengans === undefined || celengans.length === 0){
         dispatch(deleteKeinginan(id))
         .then(res =>{
-          console.log(res);
           if(res.type === "deleteKeinginan/fulfilled"){
             Swal.fire(
               'Berhasil!',
               `Berhasil menghapus ${judul}`,
               'success'
             )
-            navigate('/keinginan')
+            navigate && navigate('/keinginan')
           }else{
             Swal.fire(
               'Gagal!',

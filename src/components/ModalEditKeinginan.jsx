@@ -110,6 +110,7 @@ const ModalEditKeinginan = ({data, template}) =>{
           onClick={handleClick}
           size={'sm'} 
           variant='plain'
+          disabled={data.selesai}
           sx={{color: theme.vars.blue}}
         >
           <EditRoundedIcon />
@@ -155,7 +156,6 @@ const ModalEditKeinginan = ({data, template}) =>{
           >
             <Stack spacing={2}>
               <TextField label="judul" onChange={handleChange} name="judul" value={judul} autoFocus required />
-              <TextField type='number' label="nominal" onChange={handleChange} name="nominal" value={nominal} required />
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DesktopDatePicker
                   label="set target"
@@ -168,6 +168,7 @@ const ModalEditKeinginan = ({data, template}) =>{
                   renderInput={(params) => <MuiTextField required name='target' variant={'standard'} {...params} />}
                 />
               </LocalizationProvider>
+              <TextField type='number' label="nominal" onChange={handleChange} name="nominal" value={nominal} required />
               <FormLabel id="select-field-demo-label" htmlFor="select-prioritas">
                 {`prioritas `}<span style={{ color: '#c00'}}>*</span>
               <Select

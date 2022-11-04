@@ -42,10 +42,19 @@ const APIKeinginan ={
       return err
     }
   }, 
+  // updated: also set selesai if celengan = nominal
   async celengin(data){
-    const id = data.keinginan_id
+    const {keinginan_id: id, celengan, selesai} = data
     try{
-      const res = await axiosInstance.patch(`/keinginan/${id}`, {celengan: data.celengan})
+      const res = await axiosInstance.patch(`/keinginan/${id}`, {celengan, selesai})
+      return res
+    }catch(err){
+      return err
+    }
+  },
+  async achieveKeinginan(){
+    try{
+      const res = await axiosInstance.put('/celengan/selesai')
       return res
     }catch(err){
       return err

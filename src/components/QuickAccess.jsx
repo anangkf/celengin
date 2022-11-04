@@ -2,7 +2,7 @@ import { AddCircle, KeyboardArrowDown } from '@mui/icons-material'
 import { Box, Button, Input, Option, Select, selectClasses, Typography } from '@mui/joy'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCelengan, fetchKeinginanList } from '../store/features/keinginan/keinginanSlice'
+import { achieveKeinginan, addCelengan, fetchKeinginanList } from '../store/features/keinginan/keinginanSlice'
 import { theme } from '../themes'
 import BoxWrapper from './BoxWrapper'
 import Auth from '../utils/Auth'
@@ -15,7 +15,6 @@ const QuickAccess = () => {
 
   const handleChange = (e) =>{
     e.preventDefault()
-
     const user_id = Auth.getUserId()
     const formData = new FormData(e.target)
     let selectedValue = formData.get('keinginan')
@@ -26,15 +25,17 @@ const QuickAccess = () => {
     celengan = Number(celengan)
     nominal = Number(nominal)
     const amount = celengan + input
-    console.log({nominal, celengan, input, amount})
+    const selesai = Boolean(amount === nominal)
+    
     input < 0 
       && Swal.fire({
         icon: 'info',
         title: 'Upss',
         text: 'Ngga bisa nyelengin bilangan negatif',
       })
-    if(amount < nominal && input > 0){
-      dispatch(addCelengan({keinginan_id, user_id, nominal: input, celengan: amount}))
+    if(amount <= nominal && input > 0){
+      selesai && dispatch(achieveKeinginan())
+      dispatch(addCelengan({keinginan_id, user_id, nominal: input, celengan: amount, selesai}))
         .then(res =>{
           if(res.payload.status){
             Swal.fire({
@@ -44,9 +45,7 @@ const QuickAccess = () => {
             })
           }
         })
-    }else if(amount === nominal){
-      alert('Post keinginan selesai')
-    }else if(amount > nominal){
+    }else{
       Swal.fire({
         icon: 'info',
         title: 'Upss',
@@ -100,7 +99,9 @@ const QuickAccess = () => {
               },
             }}
           >
-            {keinginanList.map((item) =>{
+            {keinginanList
+            .filter(val => !val.selesai)
+            .map((item) =>{
               return(
                 <Option key={item.id} value={`${item.id}_${item.celengan}_${item.nominal}`}>{item.judul}</Option>
               )

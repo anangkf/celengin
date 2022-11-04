@@ -8,6 +8,7 @@ const initialState ={
   celengan: [],
   celengan_hari_ini: 0,
   loading: false,
+  achieved: 0, //count from table selesai
   currentDetail: {}
 }
 
@@ -58,6 +59,15 @@ export const addCelengan = createAsyncThunk('add/celengan', async(data) =>{
     return returned
   }catch(err){
     console.log(err)
+  }
+})
+
+export const achieveKeinginan = createAsyncThunk('post/selesai', async() =>{
+  try{
+    const res = await APIKeinginan.achieveKeinginan()
+    return res.data.results.returning.jumlah
+  }catch(err){
+    console.log(err.response)
   }
 })
 
@@ -144,11 +154,18 @@ export const KeinginanSlice = createSlice({
         state.celengan.unshift(add)
         state.data.map(item =>{
           if(item.id === patched.id){
-            item.celengan = patched.celengan
-            return item
+            return patched
           }
           return item
         })
+        state.currentDetail = patched
+        state.loading = false
+      })
+      .addCase(achieveKeinginan.pending, (state) =>{
+        state.loading = true
+      })
+      .addCase(achieveKeinginan.fulfilled, (state, action) =>{
+        state.achieved = action.payload
         state.loading = false
       })
       .addCase(getCelenganList.pending, (state) =>{
@@ -170,23 +187,14 @@ export const KeinginanSlice = createSlice({
       })
       .addCase(deleteKeinginanWithItsCelengan.fulfilled, (state, action) =>{
         const {deletedCelengan, keinginan} = action.payload
-        state.keinginan.map(val => val.id !== keinginan.id)
-        // filter celengan list
-        // const newState = state.celengan.filter(val =>{
-        //   return deletedCelengan.filter(item =>{
-        //     return item.id === val.id
-        //   }).length === 0
-        // })
-        // state.celengan = newState
-        // deletedCelengan.map(item =>{
-        //   state.celengan.filter(val => val.id !== item.d)
-        //   return state.celengan
-        // })
-        // filter celengan hari ini
-        // celengan.map(item =>{
-          //   state.celengan_hari_ini.filter(val => val.id !== item.d)
-          //   return state.celengan_hari_ini
-          // })
+        state.data.filter(val => val.id !== keinginan.id)
+        // still not sure about this
+        const filteredCelengan = state.celengan.filter(val =>{
+          return deletedCelengan.filter(item =>{
+            return item.id === val.id
+          }).length === 0
+        })
+        state.celengan = filteredCelengan
         state.loading = false
       })
       .addCase(deleteKeinginan.pending, (state) =>{

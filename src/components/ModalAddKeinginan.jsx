@@ -89,20 +89,12 @@ const ModalAddKeinginan = ({text}) =>{
           >
             Buat keinginan baru
           </Typography>
-          {/* <Typography
-            id="basic-modal-dialog-description"
-            mt={0.5}
-            mb={2}
-            textColor="text.tertiary"
-          >
-            Fill in the information of the project.
-          </Typography> */}
+
           <form
             onSubmit={handleSubmit}
           >
             <Stack spacing={2}>
               <TextField label="judul" name="nama" autoFocus required />
-              <TextField type='number' label="nominal" name="nominal" required />
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DesktopDatePicker
                   label="set target"
@@ -114,6 +106,7 @@ const ModalAddKeinginan = ({text}) =>{
                   renderInput={(params) => <MuiTextField required name='date' variant={'standard'} {...params} />}
                 />
               </LocalizationProvider>
+              <TextField type='number' label="nominal" name="nominal" required />
               <FormLabel id="select-field-demo-label" htmlFor="select-prioritas">
                 {`prioritas `}<span style={{ color: '#c00'}}>*</span>
               <Select
