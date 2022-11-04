@@ -64,7 +64,7 @@ const QuickStarter = () => {
                   variant={'solid'}
                   sx={{
                     backgroundColor: theme.vars.softGray,
-                    minHeight: '140px',
+                    minHeight: '160px',
                     minWidth: '260px',
                     display: 'flex',
                     scrollSnapAlign: 'start',

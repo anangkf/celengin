@@ -11,12 +11,11 @@ import { fetchKeinginanTerbaru } from '../store/features/keinginan/keinginanSlic
 const KeinginanTerbaru = ({userData}) => {
   const {userId: userID } = userData
   const dispatch = useDispatch()
-  const keinginanState = useSelector(state => state.keinginan)
-  const {terbaru, loading} = keinginanState;
+  const terbaru = useSelector(state => state.keinginan.terbaru)
   
   useEffect(() => {
     dispatch(fetchKeinginanTerbaru(userID))
-  }, [dispatch])
+  }, [dispatch, userID])
   
   return (
     <BoxWrapper>
