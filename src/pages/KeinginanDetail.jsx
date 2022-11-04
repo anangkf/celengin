@@ -6,13 +6,7 @@ import { theme } from '../themes'
 import KeinginanDetailInfo from '../components/KeinginanDetailInfo';
 
 const KeinginanDetail = () => {
-  const data = {
-    id: 1,
-    judul: 'Beli motor',
-    nominal: 1000000,
-    target: 2,
-    celengan_per_hari: 20000
-  }
+
   return (
     <Box
       sx={{
@@ -37,7 +31,7 @@ const KeinginanDetail = () => {
             Detail Keinginan
           </Typography>
           
-          <KeinginanDetailInfo data={data}/>
+          <KeinginanDetailInfo/>
         </BoxWrapper>
       </Container>
     </Box>

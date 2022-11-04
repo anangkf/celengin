@@ -1,55 +1,23 @@
-import { Box, Button, Typography } from '@mui/joy';
-import React from 'react'
+import { Box, Button, Card, Typography } from '@mui/joy';
+import { Skeleton } from '@mui/material';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTemplate } from '../store/features/templates/templateSlice';
+
 import { theme } from '../themes';
 import BoxWrapper from './BoxWrapper';
 import HorizontalScroller from './HorizontalScroller'
+import ModalAddKeinginan from './ModalAddKeinginan'
 import QuickStarterItem from './QuickStarterItem';
 
 const QuickStarter = () => {
-  const quickStarter = [
-    {
-      id: 1,
-      nama: 'Template 1',
-      nominal: 1000000,
-      target: 2
-    },
-    {
-      id: 2,
-      nama: 'Template 2',
-      nominal: 1000000,
-      target: 1
-    },
-    {
-      id: 3,
-      nama: 'Template 3',
-      nominal: 2000000,
-      target: 2
-    },
-    {
-      id: 4,
-      nama: 'Template 4',
-      nominal: 1000000,
-      target: 3
-    },
-    {
-      id: 5,
-      nama: 'Template 5',
-      nominal: 5000000,
-      target: 6
-    },
-    {
-      id: 6,
-      nama: 'Template 6',
-      nominal: 5000000,
-      target: 9
-    },
-    {
-      id: 7,
-      nama: 'Template 7',
-      nominal: 10000000,
-      target: 12
-    },
-  ]
+  const dispatch = useDispatch()
+  const templates = useSelector(state => state.template.data)
+  const loading = useSelector(state => state.template.loading)
+
+  useEffect(() => {
+    dispatch(fetchTemplate())
+  }, [dispatch])
 
   return (
     <BoxWrapper>
@@ -67,7 +35,8 @@ const QuickStarter = () => {
         >
           Quick starter
         </Typography>
-        <Button
+        <ModalAddKeinginan text={'Buat sendiri'}/>
+        {/* <Button
           sx={{
             backgroundColor: theme.vars.dark,
             width: '120px',
@@ -79,14 +48,45 @@ const QuickStarter = () => {
           }}
         >
           Buat sendiri
-        </Button>
+        </Button> */}
       </Box>
       <HorizontalScroller>
-          {quickStarter.map(item =>{
-            return(
-              <QuickStarterItem key={item.id} data={item}/>
-            )
-          })}
+          {!loading
+            ? templates.map(item =>{
+              return(
+                <QuickStarterItem key={item.id} data={item}/>
+              )
+            })
+            : [1,2,3,4,5,6,7].map(val =>{
+              return(
+                <Card
+                  key={val}
+                  variant={'solid'}
+                  sx={{
+                    backgroundColor: theme.vars.softGray,
+                    minHeight: '160px',
+                    minWidth: '260px',
+                    display: 'flex',
+                    scrollSnapAlign: 'start',
+                  }}
+                >
+                  <Skeleton animation="wave" width={160}/>
+                  <Skeleton animation="wave" width={120}/>
+                  <Skeleton 
+                    animation="wave" 
+                    variant={'rectangular'}
+                    sx={{
+                      borderRadius: 2,
+                      width: 100,
+                      height: 36,
+                      alignSelf: 'end',
+                      mt: 2
+                    }}
+                  />
+                </Card>
+              )
+            })
+          }
       </HorizontalScroller>
     </BoxWrapper>
   )
