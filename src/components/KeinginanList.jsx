@@ -10,7 +10,7 @@ const KeinginanList = ({data, manipulate}) => {
 
       }}
     >
-      {data.map(item =>{
+      {data?.map(item =>{
         return(
           <KeinginanListItem key={item.id} data={item} manipulate={manipulate} />
         )
