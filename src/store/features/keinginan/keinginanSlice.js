@@ -152,7 +152,13 @@ export const KeinginanSlice = createSlice({
       .addCase(addCelengan.fulfilled, (state, action) =>{
         const {add, patched} = action.payload
         state.celengan.unshift(add)
-        state.data.map(item =>{
+        state.data = state.data.map(item =>{
+          if(item.id === patched.id){
+            return patched
+          }
+          return item
+        })
+        state.terbaru = state.terbaru.map(item =>{
           if(item.id === patched.id){
             return patched
           }
@@ -187,7 +193,7 @@ export const KeinginanSlice = createSlice({
       })
       .addCase(deleteKeinginanWithItsCelengan.fulfilled, (state, action) =>{
         const {deletedCelengan, keinginan} = action.payload
-        state.data.filter(val => val.id !== keinginan.id)
+        state.data = state.data.filter(val => val.id !== keinginan.id)
         // still not sure about this
         const filteredCelengan = state.celengan.filter(val =>{
           return deletedCelengan.filter(item =>{
