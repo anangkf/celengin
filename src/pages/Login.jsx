@@ -17,6 +17,7 @@ const LOGIN_DATA = {
 
 const Login = () => {
   const [loginData, setLoginData] = useState(LOGIN_DATA)
+  const [loading, setLoading] = useState(false)
   const [isValid, setIsValid] = useState({
     username: true,
     password: true,
@@ -39,8 +40,10 @@ const Login = () => {
   }
 
   const handleLogin = () =>{
+    setLoading(true)
     APIUser.login(loginData.username)
       .then(res =>{
+        setLoading(false)
         const userData = res.data.results[0]
         compare(loginData.password, userData.password)
           .then(res => {
@@ -56,13 +59,15 @@ const Login = () => {
             }
           })
         })
-        .catch(() => {
-          setIsValid({
-            ...isValid,
-            username: false,
-          })
+      .catch(() => {
+        setLoading(false)
+        setIsValid({
+          ...isValid,
+          username: false,
         })
+      })
   }
+
   return (
     <Box
       sx={{
@@ -161,8 +166,10 @@ const Login = () => {
           />
 
           <Button
-            onClick={handleLogin}
+            onClick={() => handleLogin()}
             variant='solid'
+            loading={loading} 
+            loadingPosition="start"
             sx={{
               color: theme.vars.light,
               backgroundColor: theme.vars.dark,
