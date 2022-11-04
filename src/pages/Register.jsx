@@ -8,6 +8,7 @@ import {bcrypter} from '../utils/bcrypter'
 import Ilustration from '../assets/img/register.png'
 import SmallFooter from '../components/SmallFooter'
 import { useState } from 'react'
+import Swal from 'sweetalert2'
 
 const USER_DATA = {
   firstname: '',
@@ -20,11 +21,14 @@ const USER_DATA = {
 const Register = () => {
   const [userData, setUserData] = useState(USER_DATA)
   const [isValid, setIsValid] = useState(true)
+  const [duplicate, setDuplicate] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
   
   const handleChange = (e) =>{
     const {name, value} = e.target
+    // setDuplicate(false)
     setUserData({
       ...userData,
       [name]: value,
@@ -34,20 +38,38 @@ const Register = () => {
   const handleRegister = () =>{
     if(userData.firstname && userData.lastname && userData.username && userData.password !== ''){
       if(userData.password === userData.confirmPassword){
+        setLoading(true)
         const data = {...userData, password: bcrypter(userData.password)};
         delete data.confirmPassword;
         
         APIUser.register(data)
-          .then(() =>{
-            setUserData(USER_DATA);
-            setTimeout(() => navigate('/login'), 2000)
+          .then((res) =>{
+            setLoading(false)
+            if(res.status === 200){
+              setUserData(USER_DATA);
+              setTimeout(() => navigate('/login'), 2000)
+            }
           })
-          .catch(err => console.log(err.response))
+          .catch(err => {
+            Swal.fire(
+              'Upss',
+              `username ${userData.username} sudah terdaftar!`,
+              'info'
+            )
+            setDuplicate(true)
+            console.log(err.response)
+          })
       }else{
         setIsValid(false)
         setTimeout(() => setIsValid(true), 1000)
       }
-    }else{alert('Semua field harus diisi!')}
+    }else{
+      Swal.fire(
+        'Upss',
+        `Semua field harus diisi!`,
+        'danger'
+      )
+    }
   }
 
   return (
@@ -146,6 +168,7 @@ const Register = () => {
             name="username" 
             value={userData.username}
             placeholder="your username…" 
+            helperText={duplicate ? 'Username sudah ada' : ''}
             variant="outlined"
             required
             fullWidth 
@@ -191,6 +214,8 @@ const Register = () => {
           </Box>
 
           <Button
+            loading={loading} 
+            loadingPosition="start"
             onClick={() => handleRegister()}
             variant='solid'
             sx={{

@@ -3,7 +3,9 @@ import Avatar from '@mui/joy/Avatar'
 import { Box, MenuItem, MenuList } from '@mui/joy';
 import styled from '@emotion/styled';
 import { ClickAwayListener, PopperUnstyled } from '@mui/base';
+import Swal from 'sweetalert2'
 import Auth from '../utils/Auth'
+import { theme } from '../themes'
 import { useNavigate } from 'react-router-dom';
 
 const Popup = styled(PopperUnstyled)({
@@ -21,6 +23,22 @@ const UserAvatar = ({initial}) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () =>{
+    Swal.fire({
+      title: 'Apakah kamu yakin?',
+      text: 'Yakin ingin keluar?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: theme.vars.blue,
+      cancelButtonColor: theme.vars.red,
+      confirmButtonText: 'Keluar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Auth.logOut(navigate)
+      }
+    })
+  }
 
   const handleListKeyDown = (event) => {
     if (event.key === 'Tab') {
@@ -70,7 +88,7 @@ const UserAvatar = ({initial}) => {
             >
               <MenuItem onClick={handleClose}>Profil</MenuItem>
               <MenuItem onClick={handleClose}>Ganti password</MenuItem>
-              <MenuItem onClick={() => Auth.logOut(navigate)}>Keluar</MenuItem>
+              <MenuItem onClick={handleLogout}>Keluar</MenuItem>
             </MenuList>
           </ClickAwayListener>
         </Popup>
