@@ -6,7 +6,7 @@ import BoxWrapper from './BoxWrapper'
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchKeinginanList, getCelenganList } from '../store/features/keinginan/keinginanSlice'
+import { fetchKeinginanList, getCelenganList, setCurrentTab } from '../store/features/keinginan/keinginanSlice'
 import moment from 'moment/moment'
 import { formatRp } from '../utils/formatRp';
 
@@ -97,7 +97,10 @@ const Overview = ({userData}) => {
         >
           <Typography fontSize={'xl2'} sx={{color: 'inherit', fontWeight: 600}}>{keinginanList.length} Keinginan</Typography>
           <Button 
-            onClick={() => navigate('/keinginan')} 
+            onClick={() => {
+              dispatch(setCurrentTab(1))
+              navigate('/keinginan')
+            }} 
             variant='plain' 
             startDecorator={<InfoRoundedIcon />} 
             sx={{
@@ -127,7 +130,10 @@ const Overview = ({userData}) => {
         >
           <Typography fontSize={'xl2'} sx={{color: 'inherit', fontWeight: 600}}>{selesai.length} Tercapai</Typography>
           <Button 
-            onClick={() => navigate('/keinginan')} 
+            onClick={() => {
+              dispatch(setCurrentTab(2))
+              navigate('/keinginan')
+            }} 
             variant='plain' 
             startDecorator={<InfoRoundedIcon />} 
             sx={{
@@ -157,7 +163,10 @@ const Overview = ({userData}) => {
         >
           <Typography fontSize={'xl2'} sx={{color: 'inherit', fontWeight: 600}}>{keinginanList.length - selesai.length} Berjalan</Typography>
           <Button 
-            onClick={() => navigate('/keinginan')} 
+            onClick={() => {
+              dispatch(setCurrentTab(3))
+              navigate('/keinginan')
+            }} 
             variant='plain' 
             startDecorator={<InfoRoundedIcon />} 
             sx={{

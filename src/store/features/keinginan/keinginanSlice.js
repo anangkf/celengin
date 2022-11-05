@@ -9,7 +9,8 @@ const initialState ={
   celengan_hari_ini: 0,
   loading: false,
   achieved: 0, //count from table selesai
-  currentDetail: {}
+  currentDetail: {},
+  currentTab: 1,
 }
 
 export const fetchKeinginanTerbaru = createAsyncThunk('fetch/keinginanTerbaru', async (userId) =>{
@@ -235,10 +236,13 @@ export const KeinginanSlice = createSlice({
   reducers:{
     setKeinginanDetail: (state, action) =>{
       state.currentDetail = action.payload
+    },
+    setCurrentTab: (state, action) =>{
+      state.currentTab = action.payload
     }
   }
 })
 
-export const {setKeinginanDetail} = KeinginanSlice.actions
+export const {setKeinginanDetail, setCurrentTab} = KeinginanSlice.actions
 
 export default KeinginanSlice.reducer
