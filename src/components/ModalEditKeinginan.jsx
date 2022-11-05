@@ -25,20 +25,33 @@ import { useDispatch } from 'react-redux';
 import { createKeinginan, updateKeinginan } from '../store/features/keinginan/keinginanSlice';
 import Swal from 'sweetalert2';
 import Auth from '../utils/Auth';
+import { useEffect } from 'react';
 
 
 const ModalEditKeinginan = ({data, template}) =>{
   const userId = Auth.getUserId()
   const [formData, setFormData] = useState({
-    id: data.id,
-    judul: data.judul,
-    nominal: data.nominal,
-    target: data.target,
-    prioritas: data.prioritas,
-    celengan_per_hari: data.celengan_per_hari,
-    celengan_per_bulan: data.celengan_per_bulan,
+    id: "",
+    judul: "",
+    nominal: 0,
+    target: "",
+    prioritas: 0,
+    celengan_per_hari: 0,
+    celengan_per_bulan: 0,
   })
   
+  useEffect(() =>{
+    setFormData({
+      id: data.id,
+      judul: data.judul,
+      nominal: data.nominal,
+      target: data.target,
+      prioritas: data.prioritas,
+      celengan_per_hari: data.celengan_per_hari,
+      celengan_per_bulan: data.celengan_per_bulan,
+    })
+  }, [data])
+
   const { judul, nominal, target, prioritas} = formData
   const [open, setOpen] = useState(false);
 
