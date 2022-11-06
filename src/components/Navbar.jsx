@@ -8,6 +8,8 @@ import authorized from '../mock/navbarAuthorized'
 import notAuthorized from '../mock/navbarUnauthorized'
 import { getInitialName } from '../utils/getInitialName'
 import UserAvatar from './UserAvatar'
+import ModalReview from './ModalReview'
+import ModalFeedback from './ModalFeedback'
 
 
 const Navbar = () => {
@@ -61,22 +63,14 @@ const Navbar = () => {
                   </ListItem>
                 )
               }
+              if(item.handler === 'review'){
+                return(
+                  <ModalReview key={2}/>
+                )
+              }
+              // feedback
               return(
-                <ListItem
-                  onClick={()=> item.handler()}
-                  key={idx}
-                  sx={{
-                    color: theme.vars.dark,
-                    transition: '1s',
-                    cursor: 'pointer',
-                    fontSize: 'md',
-                    '&:hover':{
-                      transform: 'scale(1.1)'
-                    }
-                  }}
-                >
-                  {item.name}
-                </ListItem>
+                <ModalFeedback key={3}/>
               )
           })
           : notAuthorized.map(({name, path}, idx) =>{
