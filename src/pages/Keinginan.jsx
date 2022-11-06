@@ -8,24 +8,43 @@ import KeinginanList from '../components/KeinginanList';
 import ModalAddKeinginan from '../components/ModalAddKeinginan';
 import { useDispatch, useSelector } from 'react-redux';
 import Auth from '../utils/Auth';
-import { fetchKeinginanList } from '../store/features/keinginan/keinginanSlice';
+import { fetchKeinginanList, setCurrentTab } from '../store/features/keinginan/keinginanSlice';
 import { useDebounce } from 'use-debounce';
+import NotResultsImg from '../assets/img/no-results.png'
 
 const Keinginan = () => {  
   const dispatch = useDispatch()
   const userId = Auth.getUserId()
   const keinginanList = useSelector(state => state.keinginan.data)
-  
+  const currentTab = useSelector(state => state.keinginan.currentTab)
+
+  // const [currentTab, setCurrentTab] = useState(0)
   const [keyword, setKeyword] = useState('')
-  const [debouncedKeyword] = useDebounce(keyword, 1000)
+  const [debouncedKeyword] = useDebounce(keyword, 500)
   
-  useEffect(() =>{
-    console.log(debouncedKeyword);
-  }, [debouncedKeyword])
+  let data = keinginanList
+
+  if(debouncedKeyword){
+    data = data.filter(val => {
+      const judul = val.judul.toLowerCase()
+      return judul.includes(debouncedKeyword.toLowerCase())
+    })
+  }
+
+  const handleTabs = (_, value) =>{
+    dispatch(setCurrentTab(value))
+  }
 
   useEffect(() =>{
     userId && dispatch(fetchKeinginanList(userId))
   }, [dispatch, userId])
+  
+  if(currentTab === 2){
+    data = data.filter(val => !val.selesai)
+  }
+  if(currentTab === 3){
+    data = data.filter(val => val.selesai)
+  }
   
   return (
     <Box
@@ -50,7 +69,7 @@ const Keinginan = () => {
             Keinginanku
           </Typography>
           <Typography>
-            Menampilkan {keinginanList.length} keinginan
+            Menampilkan {data.length} keinginan
           </Typography>
 
           <Box
@@ -71,26 +90,13 @@ const Keinginan = () => {
               />
             </FormControl>
             <ModalAddKeinginan text={'Buat baru'} />
-            {/* <Button 
-              startDecorator={<AddCircle />}
-              sx={{
-                backgroundColor: theme.vars.dark,
-                width: '150px',
-                '&:hover':{
-                  backgroundColor: theme.vars.dark,
-                  opacity: 0.9
-                }
-              }}
-            >
-              Buat baru
-            </Button> */}
           </Box>
           <Box
             sx={{display: 'flex', justifyContent: 'center', my: 3}}
           >
             <Tabs 
-              defaultValue={1}
-              onChange={((event, value) => console.log({event, value}))}
+              defaultValue={currentTab}
+              onChange={handleTabs}
               sx={{width: '80%', color: theme.vars.dark}}
             >
               <TabList>
@@ -100,7 +106,37 @@ const Keinginan = () => {
               </TabList>
             </Tabs>
           </Box>
-          <KeinginanList data={keinginanList} manipulate={true}/>  
+          {data.length > 0
+            ? <KeinginanList data={data} manipulate={true}/>
+            : <Box
+                sx={{
+                  backgroundColor: theme.vars.light,
+                  height: '42vh',
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <img
+                  height={'50%'}
+                  src={NotResultsImg}
+                  alt='not-found'
+                  loading='lazy'
+                />
+                <Typography
+                  sx={{
+                    color: theme.vars.dark,
+                    fontSize: 'xl',
+                    fontWeight: 600,
+                    pt: 2
+                  }}
+                >
+                  Upss.. keinginan dengan judul {keyword} ngga ada nih
+                </Typography>
+              </Box>
+          }
         </BoxWrapper>
       </Container>
     </Box>

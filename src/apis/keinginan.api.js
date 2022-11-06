@@ -104,6 +104,14 @@ const APIKeinginan ={
     }catch(err){
       return err
     }
+  },
+  async getTotalAchieved(){
+    try{
+      const res = await axiosInstance.get('keinginan/selesai')
+      return res
+    }catch(err){
+      return err
+    }
   }
 }
 
