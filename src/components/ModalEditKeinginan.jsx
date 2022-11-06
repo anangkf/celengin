@@ -26,6 +26,7 @@ import { createKeinginan, updateKeinginan } from '../store/features/keinginan/ke
 import Swal from 'sweetalert2';
 import Auth from '../utils/Auth';
 import { useEffect } from 'react';
+import { randomlyShowModalReview } from '../store/features/modal/modalSlice';
 
 
 const ModalEditKeinginan = ({data, template}) =>{
@@ -110,6 +111,10 @@ const ModalEditKeinginan = ({data, template}) =>{
               icon: 'success',
               title: 'Berhasil',
               text: 'Berhasil menambahkan keinginan!',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                dispatch(randomlyShowModalReview())
+              }
             })
       })
 

@@ -5,15 +5,18 @@ import { theme } from '../themes';
 import Auth from '../utils/Auth'
 import { CONST } from '../utils/constants';
 import Swal from 'sweetalert2';
+import { randomlyShowModalReview } from '../store/features/modal/modalSlice';
+import { useDispatch } from 'react-redux';
 
 export const ModalFeedback = () => {
   const {firstname} = Auth.getUserDetails()
+  const dispatch = useDispatch()
 
   const [open, setOpen] = useState(false);
   const [valid, setValid] = useState(true);
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState({from_name: firstname, email: '', message: ''});
-  
+    
   const maxMessage = 150
   const {EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY} = CONST
 
@@ -36,7 +39,11 @@ export const ModalFeedback = () => {
             'Berhasil',
             'Terima kasih, masukan dari kamu sudah terkirim',
             'success'
-          )
+          ).then((result) => {
+            if (result.isConfirmed) {
+              dispatch(randomlyShowModalReview())
+            }
+          })
         }
       })
       .catch(err => {

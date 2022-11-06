@@ -8,7 +8,7 @@ import HorizontalScroller from './HorizontalScroller'
 
 const Reviews = () => {
 
-  const {data, error, loading} = useSubscription(SUBS_REVIEW_LIST)
+  const {data, loading} = useSubscription(SUBS_REVIEW_LIST)
 
   return (
     <Box

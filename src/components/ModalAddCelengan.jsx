@@ -13,6 +13,7 @@ import Auth from '../utils/Auth';
 import { useDispatch } from 'react-redux';
 import { achieveKeinginan, addCelengan } from '../store/features/keinginan/keinginanSlice';
 import Swal from 'sweetalert2';
+import { randomlyShowModalReview } from '../store/features/modal/modalSlice';
 
 const ModalAddCelengan = ({text, data}) =>{
   const [open, setOpen] = useState(false);
@@ -45,6 +46,10 @@ const ModalAddCelengan = ({text, data}) =>{
                 icon: 'success',
                 title: 'Berhasil',
                 text: 'Berhasil menambahkan celengan!',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  dispatch(randomlyShowModalReview())
+                }
               })
             }
           })

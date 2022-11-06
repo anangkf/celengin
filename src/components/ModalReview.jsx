@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
-import {Button, Modal, ModalDialog, Typography, FormHelperText, FormLabel, ListItem, Stack, Textarea } from '@mui/joy';
+import {Button, Modal, ModalDialog, Typography, FormHelperText, FormLabel, ListItem, Stack, Textarea, ModalClose } from '@mui/joy';
 import { Rating } from '@mui/material';
 import { theme } from '../themes';
 import { useMutation } from '@apollo/client';
 import { ADD_REVIEW } from '../graphql/mutations';
 import Auth from '../utils/Auth';
 import Swal from 'sweetalert2';
+import { useDispatch, useSelector } from 'react-redux';
+import { setShowModalReview } from '../store/features/modal/modalSlice';
 
 export const ModalReview = () => {
   const user_id = Auth.getUserId()
+  const dispatch = useDispatch()
+  const show = useSelector(state => state.modal.showModalReview)
+
   const [open, setOpen] = useState(false);
   const [review, setReview] = useState({rating: 0, comment: ''});
+  
+  const modalTrigger = Boolean(open || show)
   const maxComment = 80
-  // console.log([review.rating, review.comment]);
-  const [sendReview, { loading, error}] = useMutation(ADD_REVIEW)
+  
+  const [sendReview, { loading}] = useMutation(ADD_REVIEW)
   
   const handleSubmit = () =>{
-    // const {rating, comment} = review
     sendReview({variables:{user_id, ...review, update_columns:["rating", "comment"]}})
       .then(() => {
         setOpen(false)
+        dispatch(setShowModalReview(false))
         setReview({rating: 0, comment: ''})
         Swal.fire(
           'Berhasil',
@@ -45,7 +52,7 @@ export const ModalReview = () => {
       >
         Beri rating
       </ListItem>
-      <Modal open={open} sx={{top: 80}} onClose={() => setOpen(false)}>
+      <Modal open={modalTrigger} sx={{top: 80}} onClose={() => setOpen(false)}>
         <ModalDialog
           aria-labelledby="basic-modal-dialog-title"
           aria-describedby="basic-modal-dialog-description"
@@ -59,6 +66,16 @@ export const ModalReview = () => {
             boxShadow: 'lg',
           }}
         >
+          <ModalClose
+            variant="outlined"
+            sx={{
+              top: 'calc(-1/4 * var(--IconButton-size))',
+              right: 'calc(-1/4 * var(--IconButton-size))',
+              boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',
+              borderRadius: '50%',
+              bgcolor: 'background.body',
+            }}
+          />
           <Typography
             id="basic-modal-dialog-title"
             component="h2"

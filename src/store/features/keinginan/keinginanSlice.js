@@ -119,6 +119,15 @@ export const updateKeinginan = createAsyncThunk('update/keinginan', async(data) 
   }
 })
 
+export const getTotalAchieved = createAsyncThunk('fetch/totalSelesai', async() =>{
+  try{
+    const res = await APIKeinginan.getTotalAchieved()
+    return res.data.results[0].jumlah
+  }catch(err){
+    console.log(err.response)
+  }
+})
+
 export const KeinginanSlice = createSlice({
   name: 'keinginan',
   initialState,
@@ -231,6 +240,9 @@ export const KeinginanSlice = createSlice({
         })
         state.currentDetail = action.payload
         state.loading = false
+      })
+      .addCase(getTotalAchieved.fulfilled, (state, action) =>{
+        state.achieved = action.payload
       })
   },
   reducers:{
