@@ -7,6 +7,7 @@ import { theme } from '../themes'
 import BoxWrapper from './BoxWrapper'
 import Auth from '../utils/Auth'
 import Swal from 'sweetalert2'
+import { randomlyShowModalReview } from '../store/features/modal/modalSlice'
 
 const QuickAccess = () => {
   const userId = Auth.getUserId()
@@ -42,6 +43,10 @@ const QuickAccess = () => {
               icon: 'success',
               title: 'Berhasil',
               text: 'Berhasil menambahkan celengan!',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                dispatch(randomlyShowModalReview())
+              }
             })
           }
         })

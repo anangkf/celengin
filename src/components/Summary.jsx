@@ -1,8 +1,17 @@
 import { Box, Typography } from '@mui/joy'
 import React from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getTotalAchieved } from '../store/features/keinginan/keinginanSlice'
 import { theme } from '../themes'
 
 const Summary = () => {
+  const dispatch = useDispatch()
+  const achieved = useSelector(state => state.keinginan.achieved)
+
+  useEffect(() =>{
+    dispatch(getTotalAchieved())
+  },[dispatch])
   return (
     <Box
       sx={{
@@ -28,7 +37,7 @@ const Summary = () => {
             fontWeight: 700
           }}
         >
-          99+
+          {achieved}+
         </Typography>
         <Typography 
           sx={{

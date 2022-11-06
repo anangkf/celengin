@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { deleteKeinginan, deleteKeinginanWithItsCelengan } from "../store/features/keinginan/keinginanSlice";
+import { randomlyShowModalReview } from "../store/features/modal/modalSlice";
 import { theme } from "../themes";
 
 export const handleDeleteKeinginan = (id, data, dispatch, navigate) =>{
@@ -24,7 +25,11 @@ export const handleDeleteKeinginan = (id, data, dispatch, navigate) =>{
               'Berhasil!',
               `Berhasil menghapus ${judul}`,
               'success'
-            )
+            ).then((result) => {
+              if (result.isConfirmed) {
+                dispatch(randomlyShowModalReview())
+              }
+            })
             navigate && navigate('/keinginan')
           }else{
             Swal.fire(

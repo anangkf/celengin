@@ -9,7 +9,8 @@ const initialState ={
   celengan_hari_ini: 0,
   loading: false,
   achieved: 0, //count from table selesai
-  currentDetail: {}
+  currentDetail: {},
+  currentTab: 1,
 }
 
 export const fetchKeinginanTerbaru = createAsyncThunk('fetch/keinginanTerbaru', async (userId) =>{
@@ -113,6 +114,15 @@ export const updateKeinginan = createAsyncThunk('update/keinginan', async(data) 
   try{
     const res = await APIKeinginan.updateKeinginan(data)
     return res.data.results
+  }catch(err){
+    console.log(err.response)
+  }
+})
+
+export const getTotalAchieved = createAsyncThunk('fetch/totalSelesai', async() =>{
+  try{
+    const res = await APIKeinginan.getTotalAchieved()
+    return res.data.results[0].jumlah
   }catch(err){
     console.log(err.response)
   }
@@ -231,14 +241,20 @@ export const KeinginanSlice = createSlice({
         state.currentDetail = action.payload
         state.loading = false
       })
+      .addCase(getTotalAchieved.fulfilled, (state, action) =>{
+        state.achieved = action.payload
+      })
   },
   reducers:{
     setKeinginanDetail: (state, action) =>{
       state.currentDetail = action.payload
+    },
+    setCurrentTab: (state, action) =>{
+      state.currentTab = action.payload
     }
   }
 })
 
-export const {setKeinginanDetail} = KeinginanSlice.actions
+export const {setKeinginanDetail, setCurrentTab} = KeinginanSlice.actions
 
 export default KeinginanSlice.reducer
