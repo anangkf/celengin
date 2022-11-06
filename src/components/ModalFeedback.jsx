@@ -112,7 +112,7 @@ export const ModalFeedback = () => {
               label={'E-mail'}
               onChange={handleChange}
               error={!valid}
-              placeholder="Placeholder" 
+              placeholder="mail@example.com" 
               autoFocus 
               required
             />
@@ -123,7 +123,7 @@ export const ModalFeedback = () => {
               name={'message'}
               onChange={handleChange}
               componentsProps={{textarea:{maxLength: maxMessage}}} 
-              placeholder="Placeholder" 
+              placeholder="Sampaikan feedback mu disini" 
               minRows={2} 
               maxRows={4}
             />

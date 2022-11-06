@@ -1,5 +1,7 @@
 export const CONST = {
   BASE_URL_API: process.env.REACT_APP_BASE_URL_API,
+  BASE_URL_GRAPHQL: process.env.REACT_APP_BASE_URL_GRAPHQL,
+  BASE_URL_GRAPHQL_WS: process.env.REACT_APP_BASE_URL_GRAPHQL_WS,
   ADMIN_SECRET: process.env.REACT_APP_HASURA_ADMIN_SECRET,
   EMAILJS_SERVICE_ID: 'service_twjdk3h',
   EMAILJS_TEMPLATE_ID: 'template_vxncwrd',
