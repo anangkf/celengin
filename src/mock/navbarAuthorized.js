@@ -11,12 +11,12 @@ const authorized = [
   },
   {
     name: 'Beri rating',
-    handler: 'function' ,
+    handler: 'review' ,
     type: 'handler'
   },
   {
     name: 'Feedback',
-    handler: 'function',
+    handler: 'feedback',
     type: 'handler'
   },
 ]

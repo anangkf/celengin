@@ -8,17 +8,21 @@ import { store } from './store';
 import './styles/global.css';
 import { CssVarsProvider } from '@mui/joy';
 import { theme as joyTheme, muiTheme } from './themes';
+import { ApolloProvider } from '@apollo/client';
+import client from './configs/apollo-client';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const theme = deepmerge(muiTheme, joyTheme);
 root.render(
   
   <React.StrictMode>
-    <Provider store={store}>
-      <CssVarsProvider theme={theme}>
-        <CssBaseline />
-        <SetupRouter />
-      </CssVarsProvider>
-    </Provider>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <CssVarsProvider theme={theme}>
+          <CssBaseline />
+          <SetupRouter />
+        </CssVarsProvider>
+      </Provider>
+    </ApolloProvider>
   </React.StrictMode>
 );

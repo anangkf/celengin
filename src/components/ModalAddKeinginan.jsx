@@ -23,6 +23,7 @@ import { getCelenganPreset } from '../utils/getCelenganPreset';
 import { useDispatch } from 'react-redux';
 import { createKeinginan } from '../store/features/keinginan/keinginanSlice';
 import Swal from 'sweetalert2';
+import { randomlyShowModalReview } from '../store/features/modal/modalSlice';
 
 const ModalAddKeinginan = ({text}) =>{
   const [open, setOpen] = useState(false);
@@ -51,6 +52,10 @@ const ModalAddKeinginan = ({text}) =>{
               icon: 'success',
               title: 'Berhasil',
               text: 'Berhasil menambahkan keinginan!',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                dispatch(randomlyShowModalReview())
+              }
             })
       })
     setOpen(false);
