@@ -13,6 +13,7 @@ const httpLink = new HttpLink({
 
 const wsLink = new GraphQLWsLink(createClient({
   url: CONST.BASE_URL_GRAPHQL_WS,
+  reconnect: true,
   connectionParams: {
     headers:{
       "x-hasura-admin-secret": CONST.ADMIN_SECRET,
