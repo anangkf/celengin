@@ -36,6 +36,7 @@ const Reviews = () => {
             <Card
               key={`${user}_${idx}`}
               sx={{
+                minWidth: '360px',
                 width: '360px',
                 minHeight: '180px',
                 display: 'flex',

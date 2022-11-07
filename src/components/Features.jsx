@@ -21,7 +21,7 @@ const Features = () => {
     {
       iconSrc: Star,
       title: 'Prioritaskan target',
-      content: 'Lebih mudah mengatur prioritas target dengan fitur ....'
+      content: 'Lebih mudah mengatur prioritas target sesuka hatimu'
     },
   ]
 
